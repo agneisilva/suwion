@@ -1,0 +1,41 @@
+- V1 - 
+    # Lista de compras atravéz de receitas
+        + Controle de ingredientes 
+        + Controle de receitas
+        + Controle de lista de compras
+        + Controle de cardápio
+        + Pesquisa e compartilhamento de receitas
+    
+- V1.2 -
+    # Assistênte de cozinha virtual 
+        + Timer
+        + Conômetro
+        + Comando de Voz
+        + Player de música
+        + Conversor de medidads
+        + IA
+
+- V1.3 - 
+    # Pesquisa de melhor preço por ingredientes
+        + Controle de estabelecimento
+        + Webcrawler para extrair massa de preços 
+            ++ BI 
+            ++ Tratamento dados
+        + Permitir usuários colocar preços (com datas)
+        + Alertas de preços por geolocalização 
+        + Alertas de preços por Promoção 
+
+- V1.4 - 
+    # Sistema de integração de entrega
+        + Avaliar possibilidade de criar processo de integra interno ou fazer integração com existêntes
+
+- V1.5 - 
+    # Histórico de preço    
+        + Controle de gastos pessoais de mercado
+
+- V2 - 
+    # Criar IOT 
+        + Controle termostato 
+        + Controle de interupção  de gás
+        + ...
+
