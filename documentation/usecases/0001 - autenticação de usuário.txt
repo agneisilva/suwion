@@ -1,0 +1,1 @@
+- 0001.1 - Eu como usuário do sistema quero me autenticar no sistema pela conta do Google. 

@@ -33,9 +33,12 @@
     # Histórico de preço    
         + Controle de gastos pessoais de mercado
 
+ - V1.6 - 
+    # Consultoria online de nutrição 
+        
+
 - V2 - 
     # Criar IOT 
         + Controle termostato 
         + Controle de interupção  de gás
         + ...
-

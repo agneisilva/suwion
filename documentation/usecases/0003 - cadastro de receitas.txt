@@ -1,0 +1,4 @@
+- 0003.1 - Eu como administrador desejo publicar receitas utilizando ingredientes préviamentes casdastros
+
+- 0003.2 - Eu como usuário desejo cadastrar receitas no meu livro de receitas utilizando ingredientes préviamentes casdastros
+

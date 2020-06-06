@@ -1,0 +1,2 @@
+0008.1 - Eu como usuário gostaria de pesquisar receitas publicadas 
+         e adicionar no meu livro de receitass

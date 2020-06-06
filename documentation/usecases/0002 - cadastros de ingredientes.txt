@@ -1,0 +1,4 @@
+- 0002.1 - Eu como administrador do sistema quero poder cadastrar novos ingredientes. 
+
+- 0002.2 - Eu como usuário fornecedor desejo cadastrar novos ingredientes. 
+
