@@ -12,10 +12,24 @@ module.exports = function(application) {
         resp.status(200).json({"data": "hello world"});
     });
 
-    application.get('/show', (req, res) => {
+    application.get('/ingredientes', (req, res) => {
         db.collection('ingredientes').find().toArray((err, results) => {
             if (err) return console.log(err)
             res.status(200).json({ data: results });  
         })
+    })
+
+    application.post('/ingredientes', (req, resp) => {
+        // db.collection('ingredientes').save(req.body, (err, result) => {
+        //     if (err) return console.log(err)
+    
+        //     console.log('Salvo no Banco de Dados')
+        //     resp.status(200).json(req.body);
+        // })
+
+        
+
+        console.log(req.body);
+        resp.status(200).json();
     })
 }
