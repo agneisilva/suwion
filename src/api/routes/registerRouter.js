@@ -1,5 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 
+const IngredienteBusiness = require('../business/IngredienteBusiness.js').IngredienteBusiness;
+
 const uri = "mongodb://root:MongoDB2019!@localhost:27017/?authSource=admin";
 
 MongoClient.connect(uri, (err, client) => {
@@ -11,6 +13,8 @@ module.exports = function(application) {
     application.get("/hc", (req, resp) => {
         resp.status(200).json({"data": "hello world"});
     });
+
+    //#region Ingredientes
 
     application.get('/ingredientes', (req, res) => {
         db.collection('ingredientes').find().toArray((err, results) => {
@@ -26,10 +30,15 @@ module.exports = function(application) {
         //     console.log('Salvo no Banco de Dados')
         //     resp.status(200).json(req.body);
         // })
-
+        new IngredienteBusiness(req, application).cadastrarIngrediente(db,req.body, (err, data)=>{
+            if(!!err) resp.status(500).json(err.message);
+            else resp.status(200).json(data);
+        })
         
 
-        console.log(req.body);
-        resp.status(200).json();
+        // console.log(req.body);
+        // resp.status(200).json();
     })
+
+    //#endregion
 }
