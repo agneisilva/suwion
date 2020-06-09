@@ -24,20 +24,10 @@ module.exports = function(application) {
     })
 
     application.post('/ingredientes', (req, resp) => {
-        // db.collection('ingredientes').save(req.body, (err, result) => {
-        //     if (err) return console.log(err)
-    
-        //     console.log('Salvo no Banco de Dados')
-        //     resp.status(200).json(req.body);
-        // })
         new IngredienteBusiness(req, application).cadastrarIngrediente(db,req.body, (err, data)=>{
             if(!!err) resp.status(500).json(err.message);
             else resp.status(200).json(data);
         })
-        
-
-        // console.log(req.body);
-        // resp.status(200).json();
     })
 
     //#endregion
