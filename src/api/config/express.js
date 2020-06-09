@@ -12,6 +12,8 @@ module.exports = function () {
         .then("models")
         .then("services")
         .then("infra")
+        .then("business")
+        .then("dao")
         .then("routes")
         .into(application);
 
