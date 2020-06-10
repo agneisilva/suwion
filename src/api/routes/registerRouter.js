@@ -16,10 +16,17 @@ module.exports = function(application) {
 
     //#region Ingredientes
 
-    application.get('/ingredientes', (req, res) => {
-        db.collection('ingredientes').find().toArray((err, results) => {
-            if (err) return console.log(err)
-            res.status(200).json({ data: results });  
+    application.get('/ingredientes/:id', (req, res) => {
+        new IngredienteBusiness(req, application).buscarIngredientePorId(db,req.params.id, (err, data)=>{
+            if(!!err) resp.status(500).json(err.message);
+            else resp.status(200).json(data);
+        })
+    })
+
+    application.post('/ingredientes', (req, res) => {
+        new IngredienteBusiness(req, application).listarIngrediente(db,req.body, (err, data)=>{
+            if(!!err) resp.status(500).json(err.message);
+            else resp.status(200).json(data);
         })
     })
 
@@ -30,5 +37,19 @@ module.exports = function(application) {
         })
     })
 
-    //#endregion
+    application.put('/ingredientes', (req, resp) => {
+        new IngredienteBusiness(req, application).alterarIngrediente(db,req.body, (err, data)=>{
+            if(!!err) resp.status(500).json(err.message);
+            else resp.status(200).json(data);
+        })
+    })
+
+    application.delete('/ingredientes', (req, resp) => {
+        new IngredienteBusiness(req, application).deletarIngrediente(db,req.body, (err, data)=>{
+            if(!!err) resp.status(500).json(err.message);
+            else resp.status(200).json(data);
+        })
+    })
+
+    //#endregion Ingredientes
 }
