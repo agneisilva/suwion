@@ -1,5 +1,5 @@
 var CreateResponse = class CreateResponse {
-    createErroResponse(msg, status){
+    Erro(msg, status = 500){
         return data = {
             message: "Erro", 
             status: status, 
@@ -9,7 +9,7 @@ var CreateResponse = class CreateResponse {
         };
     }
 
-    createSuccessResponse(content){
+    Success(content){
         return data = {
             message: "Sucesso", 
             status: 200, 
