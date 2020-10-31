@@ -1,4 +1,5 @@
 const IngredienteDAO = require('../dao/ingredienteDAO.js').IngredienteDAO;
+const CreateResponse = require('../infra/CreateResponse.js').CreateResponse;
 
 var IngredienteBusiness = class IngredienteBusiness {
     constructor(require, application) {
@@ -10,11 +11,11 @@ var IngredienteBusiness = class IngredienteBusiness {
         new IngredienteDAO(conn, this._application).listarIngrediente(filtro)
         .then((data)=>{
             //Success
-            callback(undefined, {success:true, content:data});
+            callback(undefined, new CreateResponse().Success(data));
         })
         .catch((err)=>{
             //Error
-            callback({success:false, message: "Erro ao listar Ingredientes!"});
+            callback(new CreateResponse().Erro("Erro ao listar Ingredientes!"));
         });
     }
 
@@ -22,11 +23,11 @@ var IngredienteBusiness = class IngredienteBusiness {
         new IngredienteDAO(conn, this._application).buscarIngredientePorId(ingredienteId)
         .then((data)=>{
             //Success
-            callback(undefined, {success:true, content:data});
+            callback(undefined, new CreateResponse().Success(data));
         })
         .catch((err)=>{
             //Error
-            callback({success:false, message: "Erro ao buscar Ingredientes!"});
+            callback(new CreateResponse().Erro("Erro ao buscar Ingredientes!"));
         });
     }
 
@@ -34,11 +35,11 @@ var IngredienteBusiness = class IngredienteBusiness {
         new IngredienteDAO(conn, this._application).cadastrarIngrediente(ingrediente)
         .then((data)=>{
             //Success
-            callback(undefined, {success:true, content:"Ingrediente Cadastrado!"});
+            callback(undefined, new CreateResponse().Success(data));
         })
         .catch((err)=>{
             //Error
-            callback({success:false, message: "Erro ao Cadastrar Ingrediente!"});
+            callback(new CreateResponse().Erro("Erro ao Cadastrar Ingrediente!"));
         });
     }
 
@@ -46,11 +47,11 @@ var IngredienteBusiness = class IngredienteBusiness {
         new IngredienteDAO(conn, this._application).alterarIngrediente(ingrediente)
         .then((data)=>{
             //Success
-            callback(undefined, {success:true, content:"Ingrediente Alterado!"});
+            callback(undefined, new CreateResponse().Success(data));
         })
         .catch((err)=>{
             //Error
-            callback({success:false, message: "Erro ao Alterar Ingrediente!"});
+            callback(new CreateResponse().Erro("Erro ao Alterar Ingrediente!"));
         });
     }
 
@@ -58,11 +59,11 @@ var IngredienteBusiness = class IngredienteBusiness {
         new IngredienteDAO(conn, this._application).deletarIngrediente(ingredienteId)
         .then((data)=>{
             //Success
-            callback(undefined, {success:true, content:"Ingrediente Deletado!"});
+            callback(undefined, new CreateResponse().Success(data));
         })
         .catch((err)=>{
             //Error
-            callback({success:false, message: "Erro ao Cadastrar Deletado!"});
+            callback(new CreateResponse().Erro("Erro ao Cadastrar Deletado!"));
         });
     }
 }
