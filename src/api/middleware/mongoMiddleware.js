@@ -11,7 +11,7 @@ module.exports = property => {
 
         connection
             .then(client => {
-                req[property] = client.db(process.env.SUWION_MONGO_INSTANCE_NAME || 'suwion');
+                req[property] = client.db(process.env.SUWION_MONGO_COLLECTION_NAME || 'suwion');
                 next();
             })
             .catch(err => {
