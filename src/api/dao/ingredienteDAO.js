@@ -8,7 +8,10 @@ var IngredienteDAO = class IngredienteDAO {
     }
 
     listarIngrediente(filtro){
-        //TODO
+        //TODO retirar o mock e implementar o mongo
+        return new Promise((res, rej)=>{
+            res(IngredienteMock.Multiple);
+        });
     }
 
     buscarIngredientePorId(ingredienteId){
@@ -19,15 +22,24 @@ var IngredienteDAO = class IngredienteDAO {
     }
 
     cadastrarIngrediente(ingrediente){
-        //TODO
+        //TODO retirar o mock e implementar o mongo
+        return new Promise((res, rej)=>{
+            res(null);
+        });
     }
 
     alterarIngrediente(ingrediente){
-        //TODO
+        //TODO retirar o mock e implementar o mongo
+        return new Promise((res, rej)=>{
+            res(null);
+        });
     }
 
     deletarIngrediente(ingredienteId){
-        //TODO
+        //TODO retirar o mock e implementar o mongo
+        return new Promise((res, rej)=>{
+            res(null);
+        });
     }
 
 }

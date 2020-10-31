@@ -46,5 +46,5 @@ module.exports = function(application) {
 
     //#region Usuarios
 
-    //#endregion Ingredientes
+    //#endregion Usuarios
 }
