@@ -7,7 +7,7 @@ module.exports = function (application) {
 
     //#region Ingredientes
 
-    application.get('/ingredientes/:id', (req, res) => {
+    application.get('/ingredientes/:id', (req, resp) => {
         new IngredienteBusiness(req).buscarIngredientePorId(req.params.id)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -17,7 +17,7 @@ module.exports = function (application) {
             });
     })
 
-    application.get('/ingredientes', (req, res) => {
+    application.get('/ingredientes', (req, resp) => {
         new IngredienteBusiness(req).listarIngrediente(req.body)
             .then(data => {
                 resp.status(data.status).json(data);

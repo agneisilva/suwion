@@ -1,8 +1,8 @@
 
 var Ingrediente = class Ingrediente {
     constructor(id, descricao) {
-        this._id = id 
-        this._descricao = descricao
+        this.id = id 
+        this.descricao = descricao
     }
 }
 
