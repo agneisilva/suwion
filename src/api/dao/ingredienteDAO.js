@@ -1,3 +1,6 @@
+const Ingrediente = require("../models/Ingrediente.js").Ingrediente;
+const IngredienteMock = require("../mock/Ingrediente.js").IngredienteMock;
+
 var IngredienteDAO = class IngredienteDAO {
     constructor(connection, application) {
         this._connection = connection;
@@ -9,7 +12,10 @@ var IngredienteDAO = class IngredienteDAO {
     }
 
     buscarIngredientePorId(ingredienteId){
-        //TODO
+        //TODO retirar o mock e implementar o mongo
+        return new Promise((res, rej)=>{
+            res(IngredienteMock.Single);
+        });
     }
 
     cadastrarIngrediente(ingrediente){
