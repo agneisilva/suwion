@@ -1,5 +1,4 @@
 const MongoClient = require('mongodb').MongoClient;
-
 const IngredienteBusiness = require('../business/IngredienteBusiness.js').IngredienteBusiness;
 
 const uri = "mongodb://root:MongoDB2019!@localhost:27017/?authSource=admin";
@@ -23,33 +22,37 @@ module.exports = function(application) {
         })
     })
 
-    application.post('/ingredientes', (req, res) => {
-        new IngredienteBusiness(req, application).listarIngrediente(db,req.body, (err, data)=>{
+    application.get('/ingredientes', (req, res) => {
+        new IngredienteBusiness(req, application).listarIngrediente(db, req.body, (err, data)=>{
             if(!!err) resp.status(500).json(err.message);
             else resp.status(200).json(data);
         })
     })
 
-    application.post('/ingredientes', (req, resp) => {
-        new IngredienteBusiness(req, application).cadastrarIngrediente(db,req.body, (err, data)=>{
+    application.post('/ingrediente', (req, resp) => {
+        new IngredienteBusiness(req, application).cadastrarIngrediente(db, req.body, (err, data)=>{
             if(!!err) resp.status(500).json(err.message);
             else resp.status(200).json(data);
         })
     })
 
-    application.put('/ingredientes', (req, resp) => {
-        new IngredienteBusiness(req, application).alterarIngrediente(db,req.body, (err, data)=>{
+    application.put('/ingrediente', (req, resp) => {
+        new IngredienteBusiness(req, application).alterarIngrediente(db, req.body, (err, data)=>{
             if(!!err) resp.status(500).json(err.message);
             else resp.status(200).json(data);
         })
     })
 
-    application.delete('/ingredientes', (req, resp) => {
-        new IngredienteBusiness(req, application).deletarIngrediente(db,req.body, (err, data)=>{
+    application.delete('/ingrediente', (req, resp) => {
+        new IngredienteBusiness(req, application).deletarIngrediente(db, req.body, (err, data)=>{
             if(!!err) resp.status(500).json(err.message);
             else resp.status(200).json(data);
         })
     })
+
+    //#endregion Ingredientes
+
+    //#region Usuarios
 
     //#endregion Ingredientes
 }
