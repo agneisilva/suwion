@@ -1,45 +1,60 @@
 const IngredienteBusiness = require('../business/IngredienteBusiness.js').IngredienteBusiness;
 
-module.exports = function(application) {
+module.exports = function (application) {
     application.get("/hc", (req, resp) => {
-        resp.status(200).json({"data": "hello world"});
+        resp.status(200).json({ "data": "hello world" });
     });
 
     //#region Ingredientes
 
     application.get('/ingredientes/:id', (req, res) => {
-        new IngredienteBusiness(req, application).buscarIngredientePorId(db,req.params.id, (err, data)=>{
-            if(!!err) resp.status(err.status).json(err.message);
-            else resp.status(data.status).json(data);
-        })
+        new IngredienteBusiness(req).buscarIngredientePorId(req.params.id)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     application.get('/ingredientes', (req, res) => {
-        new IngredienteBusiness(req, application).listarIngrediente(db, req.body, (err, data)=>{
-            if(!!err) resp.status(500).json(err.message);
-            else resp.status(200).json(data);
-        })
+        new IngredienteBusiness(req).listarIngrediente(req.body)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     application.post('/ingrediente', (req, resp) => {
-        new IngredienteBusiness(req, application).cadastrarIngrediente(db, req.body, (err, data)=>{
-            if(!!err) resp.status(500).json(err.message);
-            else resp.status(200).json(data);
-        })
+        new IngredienteBusiness(req).cadastrarIngrediente(req.body)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     application.put('/ingrediente', (req, resp) => {
-        new IngredienteBusiness(req, application).alterarIngrediente(db, req.body, (err, data)=>{
-            if(!!err) resp.status(500).json(err.message);
-            else resp.status(200).json(data);
-        })
+        new IngredienteBusiness(req).alterarIngrediente(req.body)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     application.delete('/ingrediente', (req, resp) => {
-        new IngredienteBusiness(req, application).deletarIngrediente(db, req.body, (err, data)=>{
-            if(!!err) resp.status(500).json(err.message);
-            else resp.status(200).json(data);
-        })
+        new IngredienteBusiness(req).deletarIngrediente(req.body)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     //#endregion Ingredientes

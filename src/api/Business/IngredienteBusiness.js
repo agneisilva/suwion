@@ -2,68 +2,77 @@ const IngredienteDAO = require('../dao/ingredienteDAO.js').IngredienteDAO;
 const CreateResponse = require('../infra/CreateResponse.js').CreateResponse;
 
 var IngredienteBusiness = class IngredienteBusiness {
-    constructor(require, application) {
+    constructor(require) {
         this._require = require;
-        this._application = application;
     }
 
-    listarIngrediente(conn, filtro, callback){
-        new IngredienteDAO(conn, this._application).listarIngrediente(filtro)
-        .then((data)=>{
-            //Success
-            callback(undefined, new CreateResponse().Success(data));
-        })
-        .catch((err)=>{
-            //Error
-            callback(new CreateResponse().Erro("Erro ao listar Ingredientes!"));
+    listarIngrediente(filtro) {
+        return new Promise((res, rej) => {
+            new IngredienteDAO(this._require.db).listarIngrediente(filtro)
+                .then((data) => {
+                    //Success
+                    res(new CreateResponse().Success(data));
+                })
+                .catch((err) => {
+                    //Error
+                    rej(new CreateResponse().Erro("Erro ao Listar Ingredientes!"));
+                });
         });
     }
 
-    buscarIngredientePorId(conn, ingredienteId, callback){
-        new IngredienteDAO(conn, this._application).buscarIngredientePorId(ingredienteId)
-        .then((data)=>{
-            //Success
-            callback(undefined, new CreateResponse().Success(data));
-        })
-        .catch((err)=>{
-            //Error
-            callback(new CreateResponse().Erro("Erro ao buscar Ingredientes!"));
+    buscarIngredientePorId(ingredienteId) {
+        return new Promise((res, rej) => {
+            new IngredienteDAO(this._require.db).buscarIngredientePorId(ingredienteId)
+                .then((data) => {
+                    //Success
+                    res(new CreateResponse().Success(data));
+                })
+                .catch((err) => {
+                    //Error
+                    rej(new CreateResponse().Erro("Erro ao Buscar Ingredientes!"));
+                });
         });
     }
 
-    cadastrarIngrediente(conn, ingrediente, callback){
-        new IngredienteDAO(conn, this._application).cadastrarIngrediente(ingrediente)
-        .then((data)=>{
-            //Success
-            callback(undefined, new CreateResponse().Success(data));
-        })
-        .catch((err)=>{
-            //Error
-            callback(new CreateResponse().Erro("Erro ao Cadastrar Ingrediente!"));
+    cadastrarIngrediente(ingrediente) {
+        return new Promise((res, rej) => {
+            new IngredienteDAO(this._require.db).cadastrarIngrediente(ingrediente)
+                .then((data) => {
+                    //Success
+                    res(new CreateResponse().Success("Sucesso ao Cadastrar Ingrediente!"));
+                })
+                .catch((err) => {
+                    //Error
+                    rej(new CreateResponse().Erro("Erro ao Cadastrar Ingrediente!"));
+                });
         });
     }
 
-    alterarIngrediente(conn, ingrediente, callback){
-        new IngredienteDAO(conn, this._application).alterarIngrediente(ingrediente)
-        .then((data)=>{
-            //Success
-            callback(undefined, new CreateResponse().Success(data));
-        })
-        .catch((err)=>{
-            //Error
-            callback(new CreateResponse().Erro("Erro ao Alterar Ingrediente!"));
+    alterarIngrediente(ingrediente) {
+        return new Promise((res, rej) => {
+            new IngredienteDAO(this._require.db).alterarIngrediente(ingrediente)
+                .then((data) => {
+                    //Success
+                    res(new CreateResponse().Success("Sucesso ao Alterar Ingrediente!"));
+                })
+                .catch((err) => {
+                    //Error
+                    rej(new CreateResponse().Erro("Erro ao Alterar Ingrediente!"));
+                });
         });
     }
 
-    deletarIngrediente(conn, ingredienteId, callback){
-        new IngredienteDAO(conn, this._application).deletarIngrediente(ingredienteId)
-        .then((data)=>{
-            //Success
-            callback(undefined, new CreateResponse().Success(data));
-        })
-        .catch((err)=>{
-            //Error
-            callback(new CreateResponse().Erro("Erro ao Cadastrar Deletado!"));
+    deletarIngrediente(ingredienteId, callback) {
+        return new Promise((res, rej) => {
+            new IngredienteDAO(this._require.db).deletarIngrediente(ingredienteId)
+                .then((data) => {
+                    //Success
+                    res(new CreateResponse().Success("Sucesso ao Deletar Ingrediente!"));
+                })
+                .catch((err) => {
+                    //Error
+                    rej(new CreateResponse().Erro("Erro ao Deletar Ingrediente!"));
+                });
         });
     }
 }

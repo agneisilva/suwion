@@ -2,9 +2,8 @@ const Ingrediente = require("../models/Ingrediente.js").Ingrediente;
 const IngredienteMock = require("../mock/Ingrediente.js").IngredienteMock;
 
 var IngredienteDAO = class IngredienteDAO {
-    constructor(connection, application) {
+    constructor(connection) {
         this._connection = connection;
-        this._application = application;
     }
 
     listarIngrediente(filtro){
