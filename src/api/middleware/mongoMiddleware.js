@@ -15,6 +15,7 @@ module.exports = property => {
                 next();
             })
             .catch(err => {
+                connection = undefined;
                 next(err);
             });
     }
