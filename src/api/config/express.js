@@ -1,11 +1,15 @@
-var express = require("express");
-var load = require("consign");
-var cors = require("cors");
+const express = require("express");
+const load = require("consign");
+const cors = require("cors");
+const mongoMiddleware = require("../middleware/mongoMiddleware.js");
+
+const mongoProperty = "db";
 
 module.exports = function () {
     var application = express();
 
     application.use(cors());
+    application.use(mongoMiddleware(mongoProperty));
 
     load()
         .include("business")
