@@ -17,8 +17,8 @@ module.exports = function(application) {
 
     application.get('/ingredientes/:id', (req, res) => {
         new IngredienteBusiness(req, application).buscarIngredientePorId(db,req.params.id, (err, data)=>{
-            if(!!err) resp.status(500).json(err.message);
-            else resp.status(200).json(data);
+            if(!!err) resp.status(err.status).json(err.message);
+            else resp.status(data.status).json(data);
         })
     })
 
