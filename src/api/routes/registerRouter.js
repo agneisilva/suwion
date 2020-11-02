@@ -7,8 +7,18 @@ module.exports = function (application) {
 
     //#region Ingredientes
 
-    application.get('/ingredientes/:id', (req, resp) => {
+    application.get('/ingrediente/:id', (req, resp) => {
         new IngredienteBusiness(req).buscarIngredientePorId(req.params.id)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
+    })
+
+    application.get('/ingredientes/:descricao', (req, resp) => {
+        new IngredienteBusiness(req).buscarIngredientes(req.params.descricao)
             .then(data => {
                 resp.status(data.status).json(data);
             })
@@ -28,13 +38,21 @@ module.exports = function (application) {
     })
 
     application.post('/ingrediente', (req, resp) => {
-        new IngredienteBusiness(req).cadastrarIngrediente(req.body)
-            .then(data => {
-                resp.status(data.status).json(data);
-            })
-            .catch(err => {
-                resp.status(err.status).json(err);
-            });
+
+        try {
+            new IngredienteBusiness(req).cadastrarIngrediente(req.body)
+                .then(data => {
+                    resp.status(data.status).json(data);
+                })
+                .catch(err => {
+                    console.log(err.message);
+                    //resp.status(err.status).json(err);
+                });
+        }
+        catch (err) {
+                    console.log(err.message);
+        }
+
     })
 
     application.put('/ingrediente', (req, resp) => {

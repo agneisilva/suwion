@@ -1,5 +1,6 @@
 const IngredienteDAO = require('../dao/ingredienteDAO.js').IngredienteDAO;
 const CreateResponse = require('../infra/CreateResponse.js').CreateResponse;
+const { v4:uuid } = require('uuid');
 
 var IngredienteBusiness = class IngredienteBusiness {
     constructor(require) {
@@ -34,12 +35,27 @@ var IngredienteBusiness = class IngredienteBusiness {
         });
     }
 
+    buscarIngredientes(descricao) {
+        return new Promise((res, rej) => {
+            new IngredienteDAO(this._require.db).buscarIngredientes(descricao)
+                .then((data) => {
+                    //Success
+                    res(new CreateResponse().Success(data));
+                })
+                .catch((err) => {
+                    //Error
+                    rej(new CreateResponse().Erro("Erro ao Buscar Ingredientes!"));
+                });
+        });
+    }
+
     cadastrarIngrediente(ingrediente) {
         return new Promise((res, rej) => {
+            
             new IngredienteDAO(this._require.db).cadastrarIngrediente(ingrediente)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success("Sucesso ao Cadastrar Ingrediente!"));
+                    res(new CreateResponse().Success(data));
                 })
                 .catch((err) => {
                     //Error

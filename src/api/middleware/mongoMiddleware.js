@@ -11,7 +11,8 @@ module.exports = property => {
 
         connection
             .then(client => {
-                req[property] = client.db(process.env.SUWION_MONGO_COLLECTION_NAME || 'suwion');
+                console.log('Mongo connected');
+                req[property] = client.db(process.env.SUWION_MONGO_DB_NAME || 'suwion');
                 next();
             })
             .catch(err => {
