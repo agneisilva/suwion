@@ -50,7 +50,7 @@ module.exports = function (application) {
                 });
         }
         catch (err) {
-                    console.log(err.message);
+            console.log(err.message);
         }
 
     })
@@ -79,5 +79,83 @@ module.exports = function (application) {
 
     //#region Usuarios
 
+    application.get('/usuario/:id', (req, resp) => {
+        //TODO implementar busca de usuario por id
+    })
+
+    application.get('/usuario/:email', (req, resp) => {
+        //TODO implementar busca de usuario por email
+    })
+
+    application.get('/usuario/:nickname', (req, resp) => {
+        //TODO implementar busca de usuario por nickname
+    })
+
+    application.get('/usuarios/:nickname', (req, resp) => {
+        //TODO implementar pesquisa de usuarios por nickname
+    })
+
+    application.post('/usuario/', (req, resp) => {
+        //TODO implementar registro de usuario
+    })
+
+    application.put('/usuario/', (req, resp) => {
+        //TODO implementar atualizacao de dados do usuario
+    })
+
     //#endregion Usuarios
+
+    //#region Receitas
+
+    application.get('/receita/:id', (req, resp) => {
+        //TODO implementar busca de receita por id
+    })
+
+    application.post('/receita', (req, resp) => {
+        //TODO implementar cadastro de receita
+    })
+
+    application.post('/receitas/', (req, resp) => {
+        //TODO implementar filtros avancados de receitas
+        /*
+            nome,
+            tag,
+            autor,
+            nota,
+            (pensar em mais filtros)
+        */
+    })
+
+    //#endregion Receitas
+
+    //region Social - Receita
+
+    application.post('/social/receita/avaliar', (req, resp) => {
+        //TODO implementar avaliacao de receita
+    })
+
+    application.post('/social/receita/comentar', (req, resp) => {
+        //TODO implementar cadastro de comentario em receita
+    })
+
+    application.post('/social/receita/compartilharResultado', (req, resp) => {
+        //TODO implementar cadastro de resultado de receita (texto, img e/ou vídeo do resultado de fazer a receita)
+    })
+
+    //#endregion Social - Receita
+
+    //#region Cardapios
+
+    application.post('/cardapio/', (req, resp) => {
+        //TODO implementar cadastro de cardapio
+        /*
+            Receitas por tempo
+        */
+    })
+
+    //#endregion Cardapios
+
+    //#region Listas de Compras
+
+    //#endregion Listas de Compras
 }
