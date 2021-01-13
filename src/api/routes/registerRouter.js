@@ -149,13 +149,25 @@ module.exports = function (application) {
     application.post('/cardapio/', (req, resp) => {
         //TODO implementar cadastro de cardapio
         /*
-            Receitas por tempo
+            Receitas por dias/tempo
         */
+    })
+
+    application.post('/cardapios/', (req, resp) => {
+        //TODO implementar filtro avançado de cardapios
     })
 
     //#endregion Cardapios
 
     //#region Listas de Compras
+
+    application.post('/listaCompra/receita', (req, resp) => {
+        //TODO implementar cadastro de lista de compras baseado em uma receita e número de porções/pessoas
+    })
+
+    application.post('/listaCompra/cardapio', (req, resp) => {
+        //TODO implementar cadastro de lista de compras baseado em um cardapio e número de porções/pessoas
+    })
 
     //#endregion Listas de Compras
 }
