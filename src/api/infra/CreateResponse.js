@@ -2,7 +2,7 @@ var CreateResponse = class CreateResponse {
     Erro(msg, status = 500){
         return {
             message: "Erro", 
-            status: status, 
+            status: status || 500, 
             dateTime: null, //TODO implpementar data, 
             success: false, 
             content: msg || "" 

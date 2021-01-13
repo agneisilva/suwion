@@ -59,25 +59,40 @@ var IngredienteDAO = class IngredienteDAO {
                 if (err) rej(err);
 
                 res(ingrediente);
-                console.log("1 document inserted");
             });
         });
     }
 
     alterarIngrediente(ingrediente) {
+        //Criando query de busca para alteração
+        const query = { _id: new mongo.ObjectID(ingrediente._id) };
+        //Removendo propriedade Id do object para não permitir alterar o Id 
+        delete ingrediente._id;
+        //Criando novo objeto que será alterado 
+        var newvalues = { $set: ingrediente };
+
         //TODO retirar o mock e implementar o mongo
         return new Promise((res, rej) => {
-            res(null);
+            this.collection.updateOne(query, newvalues, (err, result) => {
+                if (err) rej(err);
+
+                res(result);
+            });
         });
     }
 
     deletarIngrediente(ingredienteId) {
+        const query = { _id: new mongo.ObjectID(ingredienteId) };
+
         //TODO retirar o mock e implementar o mongo
         return new Promise((res, rej) => {
-            res(null);
+            this.collection.deleteOne(query, (err, result) => {
+                if (err) rej(err);
+
+                res(result);
+            });
         });
     }
-
 }
 
 exports.IngredienteDAO = IngredienteDAO;
