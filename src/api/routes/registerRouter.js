@@ -66,7 +66,7 @@ module.exports = function (application) {
     })
 
     application.delete('/ingrediente', (req, resp) => {
-        new IngredienteBusiness(req).deletarIngrediente(req.body)
+        new IngredienteBusiness(req).deletarIngrediente(req.body.ingredienteId)
             .then(data => {
                 resp.status(data.status).json(data);
             })

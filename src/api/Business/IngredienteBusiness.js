@@ -78,7 +78,7 @@ var IngredienteBusiness = class IngredienteBusiness {
         });
     }
 
-    deletarIngrediente(ingredienteId, callback) {
+    deletarIngrediente(ingredienteId) {
         return new Promise((res, rej) => {
             new IngredienteDAO(this._require.db).deletarIngrediente(ingredienteId)
                 .then((data) => {
