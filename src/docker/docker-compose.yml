@@ -2,17 +2,17 @@ version: '3.4'
 
 services:
 
-   webapi:
-       image: ${DOCKER_REGISTRY:-suwion}/suwion.webapi:${PLATFORM:-linux}-${TAG:-latest}
-       container_name: suwion.webapi
-       restart: always
-       build:
-         context: ..
-         dockerfile: ./api/Dockerfile
-       depends_on:
-        - mongo
-       networks:
-        - bridge-network
+#    webapi:
+#        image: ${DOCKER_REGISTRY:-suwion}/suwion.webapi:${PLATFORM:-linux}-${TAG:-latest}
+#        container_name: suwion.webapi
+#        restart: always
+#        build:
+#          context: ..
+#          dockerfile: ./api/Dockerfile
+#        depends_on:
+#         - mongo
+#        networks:
+#         - bridge-network
 
     mongo:
         image: mongo:latest
