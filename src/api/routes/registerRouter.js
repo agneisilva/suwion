@@ -1,4 +1,8 @@
 const IngredienteBusiness = require('../business/IngredienteBusiness.js').IngredienteBusiness;
+const UsuarioBusiness = require('../business/UsuarioBusiness.js').UsuarioBusiness;
+const ReceitaBusiness = require('../business/ReceitaBusiness.js').ReceitaBusiness;
+const CardapioBusiness = require('../business/CardapioBusiness.js').CardapioBusiness;
+const ListaCompraBusiness = require('../business/ListaCompraBusiness.js').ListaCompraBusiness;
 
 module.exports = function (application) {
     application.get("/hc", (req, resp) => {
@@ -8,7 +12,7 @@ module.exports = function (application) {
     //#region Ingredientes
 
     application.get('/ingrediente/:id', (req, resp) => {
-        new IngredienteBusiness(req).buscarIngredientePorId(req.params.id)
+        new IngredienteBusiness(req).buscarPorId(req.params.id)
             .then(data => {
                 resp.status(data.status).json(data);
             })
@@ -18,7 +22,7 @@ module.exports = function (application) {
     })
 
     application.get('/ingredientes/:descricao', (req, resp) => {
-        new IngredienteBusiness(req).buscarIngredientes(req.params.descricao)
+        new IngredienteBusiness(req).buscar(req.params.descricao)
             .then(data => {
                 resp.status(data.status).json(data);
             })
@@ -28,7 +32,7 @@ module.exports = function (application) {
     })
 
     application.get('/ingredientes', (req, resp) => {
-        new IngredienteBusiness(req).listarIngrediente(req.body)
+        new IngredienteBusiness(req).listar(req.body)
             .then(data => {
                 resp.status(data.status).json(data);
             })
@@ -40,7 +44,7 @@ module.exports = function (application) {
     application.post('/ingrediente', (req, resp) => {
 
         try {
-            new IngredienteBusiness(req).cadastrarIngrediente(req.body)
+            new IngredienteBusiness(req).cadastrar(req.body)
                 .then(data => {
                     resp.status(data.status).json(data);
                 })
@@ -56,7 +60,7 @@ module.exports = function (application) {
     })
 
     application.put('/ingrediente', (req, resp) => {
-        new IngredienteBusiness(req).alterarIngrediente(req.body)
+        new IngredienteBusiness(req).alterar(req.body)
             .then(data => {
                 resp.status(data.status).json(data);
             })
@@ -66,7 +70,7 @@ module.exports = function (application) {
     })
 
     application.delete('/ingrediente', (req, resp) => {
-        new IngredienteBusiness(req).deletarIngrediente(req.body.ingredienteId)
+        new IngredienteBusiness(req).deletar(req.body.ingredienteId)
             .then(data => {
                 resp.status(data.status).json(data);
             })
@@ -80,23 +84,53 @@ module.exports = function (application) {
     //#region Usuarios
 
     application.get('/usuario/:id', (req, resp) => {
-        //TODO implementar busca de usuario por id
+        new UsuarioBusiness(req).buscarPorId(req.body.usuarioId)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     application.get('/usuario/:email', (req, resp) => {
-        //TODO implementar busca de usuario por email
+        new UsuarioBusiness(req).buscarPorEmail(req.body.email)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     application.get('/usuario/:nickname', (req, resp) => {
-        //TODO implementar busca de usuario por nickname
+        new UsuarioBusiness(req).buscarPorNickName(req.body.nickname)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     application.get('/usuarios/:nickname', (req, resp) => {
-        //TODO implementar pesquisa de usuarios por nickname
+        new UsuarioBusiness(req).listarPorNickName(req.body.nickname)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     application.post('/usuario/', (req, resp) => {
-        //TODO implementar registro de usuario
+        new UsuarioBusiness(req).cadastrar(req.body)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     application.put('/usuario/', (req, resp) => {
@@ -108,22 +142,33 @@ module.exports = function (application) {
     //#region Receitas
 
     application.get('/receita/:id', (req, resp) => {
-        //TODO implementar busca de receita por id
+        new ReceitaBusiness(req).buscarPorId(req.body.receitaId)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     application.post('/receita', (req, resp) => {
-        //TODO implementar cadastro de receita
+        new ReceitaBusiness(req).cadastrar(req.body)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     application.post('/receitas/', (req, resp) => {
-        //TODO implementar filtros avancados de receitas
-        /*
-            nome,
-            tag,
-            autor,
-            nota,
-            (pensar em mais filtros)
-        */
+        new ReceitaBusiness(req).filtrar(req.body)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     //#endregion Receitas
@@ -147,14 +192,23 @@ module.exports = function (application) {
     //#region Cardapios
 
     application.post('/cardapio/', (req, resp) => {
-        //TODO implementar cadastro de cardapio
-        /*
-            Receitas por dias/tempo
-        */
+        new CardapioBusiness(req).cadastrar(req.body)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     application.post('/cardapios/', (req, resp) => {
-        //TODO implementar filtro avançado de cardapios
+        new CardapioBusiness(req).filtrar(req.body)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
 
     //#endregion Cardapios
@@ -162,11 +216,23 @@ module.exports = function (application) {
     //#region Listas de Compras
 
     application.post('/listaCompra/receita', (req, resp) => {
-        //TODO implementar cadastro de lista de compras baseado em uma receita e número de porções/pessoas
+        new ListaCompraBusiness(req).criarPorReceita(req.body)
+        .then(data => {
+            resp.status(data.status).json(data);
+        })
+        .catch(err => {
+            resp.status(err.status).json(err);
+        });
     })
 
     application.post('/listaCompra/cardapio', (req, resp) => {
-        //TODO implementar cadastro de lista de compras baseado em um cardapio e número de porções/pessoas
+        new ListaCompraBusiness(req).criarPorCardapio(req.body)
+        .then(data => {
+            resp.status(data.status).json(data);
+        })
+        .catch(err => {
+            resp.status(err.status).json(err);
+        });
     })
 
     //#endregion Listas de Compras

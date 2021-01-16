@@ -1,4 +1,4 @@
-const IngredienteDAO = require('../dao/ingredienteDAO.js').IngredienteDAO;
+const IngredienteDAO = require('../dao/IngredienteDAO.js').IngredienteDAO;
 const CreateResponse = require('../infra/CreateResponse.js').CreateResponse;
 const { v4:uuid } = require('uuid');
 
@@ -7,9 +7,9 @@ var IngredienteBusiness = class IngredienteBusiness {
         this._require = require;
     }
 
-    listarIngrediente(filtro) {
+    listar(filtro) {
         return new Promise((res, rej) => {
-            new IngredienteDAO(this._require.db).listarIngrediente(filtro)
+            new IngredienteDAO(this._require.db).listar(filtro)
                 .then((data) => {
                     //Success
                     res(new CreateResponse().Success(data));
@@ -21,9 +21,9 @@ var IngredienteBusiness = class IngredienteBusiness {
         });
     }
 
-    buscarIngredientePorId(ingredienteId) {
+    buscarPorId(ingredienteId) {
         return new Promise((res, rej) => {
-            new IngredienteDAO(this._require.db).buscarIngredientePorId(ingredienteId)
+            new IngredienteDAO(this._require.db).buscarPorId(ingredienteId)
                 .then((data) => {
                     //Success
                     res(new CreateResponse().Success(data));
@@ -35,9 +35,9 @@ var IngredienteBusiness = class IngredienteBusiness {
         });
     }
 
-    buscarIngredientes(descricao) {
+    buscar(descricao) {
         return new Promise((res, rej) => {
-            new IngredienteDAO(this._require.db).buscarIngredientes(descricao)
+            new IngredienteDAO(this._require.db).buscar(descricao)
                 .then((data) => {
                     //Success
                     res(new CreateResponse().Success(data));
@@ -49,10 +49,10 @@ var IngredienteBusiness = class IngredienteBusiness {
         });
     }
 
-    cadastrarIngrediente(ingrediente) {
+    cadastrar(ingrediente) {
         return new Promise((res, rej) => {
             
-            new IngredienteDAO(this._require.db).cadastrarIngrediente(ingrediente)
+            new IngredienteDAO(this._require.db).cadastrar(ingrediente)
                 .then((data) => {
                     //Success
                     res(new CreateResponse().Success(data));
@@ -64,9 +64,9 @@ var IngredienteBusiness = class IngredienteBusiness {
         });
     }
 
-    alterarIngrediente(ingrediente) {
+    alterar(ingrediente) {
         return new Promise((res, rej) => {
-            new IngredienteDAO(this._require.db).alterarIngrediente(ingrediente)
+            new IngredienteDAO(this._require.db).alterar(ingrediente)
                 .then((data) => {
                     //Success
                     res(new CreateResponse().Success("Sucesso ao Alterar Ingrediente!"));
@@ -78,9 +78,9 @@ var IngredienteBusiness = class IngredienteBusiness {
         });
     }
 
-    deletarIngrediente(ingredienteId) {
+    deletar(ingredienteId) {
         return new Promise((res, rej) => {
-            new IngredienteDAO(this._require.db).deletarIngrediente(ingredienteId)
+            new IngredienteDAO(this._require.db).deletar(ingredienteId)
                 .then((data) => {
                     //Success
                     res(new CreateResponse().Success("Sucesso ao Deletar Ingrediente!"));

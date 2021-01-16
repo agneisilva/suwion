@@ -1,7 +1,4 @@
-const Ingrediente = require("../models/Ingrediente.js").Ingrediente;
-const IngredienteMock = require("../mock/Ingrediente.js").IngredienteMock;
 var mongo = require('mongodb');
-const registerRouter = require("../routes/registerRouter.js");
 
 const Collection = "ingrediente";
 
@@ -11,20 +8,17 @@ var IngredienteDAO = class IngredienteDAO {
         this.collection = this._connection.collection(Collection);
     }
 
-    listarIngrediente(filtro) {
-        //TODO retirar o mock e implementar o mongo
+    listar(filtro) {
         return new Promise((res, rej) => {
             this.collection.find(filtro || {}).toArray((err, result) => {
                 if (err) rej(err);
 
                 res(result);
             });
-            //res(IngredienteMock.Multiple);
         });
     }
 
-    buscarIngredientePorId(ingredienteId) {
-        //TODO retirar o mock e implementar o mongo
+    buscarPorId(ingredienteId) {
         const query = { _id: new mongo.ObjectID(ingredienteId) };
 
         return new Promise((res, rej) => {
@@ -33,13 +27,10 @@ var IngredienteDAO = class IngredienteDAO {
 
                 res(result);
             });
-            //res(IngredienteMock.Single);
         });
     }
 
-    buscarIngredientes(descricao) {
-        //TODO retirar o mock e implementar o mongo
-
+    buscar(descricao) {
         const query = { descricao: {'$regex': descricao, '$options': 'i' } };
 
         return new Promise((res, rej) => {
@@ -48,12 +39,10 @@ var IngredienteDAO = class IngredienteDAO {
 
                 res(result);
             });
-            //res(IngredienteMock.Single);
         });
     }
 
-    cadastrarIngrediente(ingrediente) {
-        //TODO retirar o mock e implementar o mongo
+    cadastrar(ingrediente) {
         return new Promise((res, rej) => {
             this.collection.insertOne(ingrediente, (err, result) => {
                 if (err) rej(err);
@@ -63,7 +52,7 @@ var IngredienteDAO = class IngredienteDAO {
         });
     }
 
-    alterarIngrediente(ingrediente) {
+    alterar(ingrediente) {
         //Criando query de busca para alteração
         const query = { _id: new mongo.ObjectID(ingrediente._id) };
         //Removendo propriedade Id do object para não permitir alterar o Id 
@@ -71,7 +60,6 @@ var IngredienteDAO = class IngredienteDAO {
         //Criando novo objeto que será alterado 
         var newvalues = { $set: ingrediente };
 
-        //TODO retirar o mock e implementar o mongo
         return new Promise((res, rej) => {
             this.collection.updateOne(query, newvalues, (err, result) => {
                 if (err) rej(err);
@@ -81,10 +69,9 @@ var IngredienteDAO = class IngredienteDAO {
         });
     }
 
-    deletarIngrediente(ingredienteId) {
+    deletar(ingredienteId) {
         const query = { _id: new mongo.ObjectID(ingredienteId) };
 
-        //TODO retirar o mock e implementar o mongo
         return new Promise((res, rej) => {
             this.collection.deleteOne(query, (err, result) => {
                 if (err) rej(err);
