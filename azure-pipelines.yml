@@ -23,6 +23,7 @@ variables:
 stages:
 - stage: Build
   displayName: Build stage
+  
   jobs:  
   - job: Build
     displayName: Build
@@ -40,6 +41,7 @@ stages:
         npm run build --if-present
         npm run test --if-present
       displayName: 'npm install, build and test'
+      workingDirectory: '$(Build.SourcesDirectory)/src/api'
       
     - task: ArchiveFiles@2
       displayName: 'Archive files'
