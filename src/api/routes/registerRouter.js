@@ -3,12 +3,16 @@ const UsuarioBusiness = require('../business/UsuarioBusiness.js').UsuarioBusines
 const ReceitaBusiness = require('../business/ReceitaBusiness.js').ReceitaBusiness;
 const CardapioBusiness = require('../business/CardapioBusiness.js').CardapioBusiness;
 const ListaCompraBusiness = require('../business/ListaCompraBusiness.js').ListaCompraBusiness;
+const path = require('path');
 
 module.exports = function (application) {
     application.get("/hc", (req, resp) => {
-        resp.status(200).json({ "data": "hello world" });
+        resp.status(200).json({ "status": "RUNNING" });
     });
 
+    application.get('/', function(req, res) {
+        res.sendFile(path.join(__dirname + '/../index.html'));
+    });
     //#region Ingredientes
 
     application.get('/ingrediente/:id', (req, resp) => {
