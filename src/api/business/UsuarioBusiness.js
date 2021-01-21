@@ -75,6 +75,34 @@ var UsuarioBusiness = class UsuarioBusiness {
                 });
         });
     }
+
+    alterar(usuario) {
+        return new Promise((res, rej) => {
+            new UsuarioDAO(this._require.db).alterar(usuario)
+                .then((data) => {
+                    //Success
+                    res(new CreateResponse().Success("Sucesso ao Alterar Ingrediente!"));
+                })
+                .catch((err) => {
+                    //Error
+                    rej(new CreateResponse().Erro("Erro ao Alterar Ingrediente!"));
+                });
+        });
+    }
+
+    deletar(usuarioId) {
+        return new Promise((res, rej) => {
+            new UsuarioDAO(this._require.db).deletar(usuarioId)
+                .then((data) => {
+                    //Success
+                    res(new CreateResponse().Success("Sucesso ao Deletar Ingrediente!"));
+                })
+                .catch((err) => {
+                    //Error
+                    rej(new CreateResponse().Erro("Erro ao Deletar Ingrediente!"));
+                });
+        });
+    }
 }
 
 exports.UsuarioBusiness = UsuarioBusiness;
