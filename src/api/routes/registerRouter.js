@@ -13,6 +13,16 @@ module.exports = function (application) {
     application.get('/', function(req, res) {
         res.sendFile(path.join(__dirname + '/../index.html'));
     });
+
+    //#region Autenticação
+
+    application.post('/token/', (req, resp) => {
+        //TODO: implementar geração de token
+        resp.status(200).json({token: "abc1234"});
+    })
+    //#endregion Autenticação
+
+
     //#region Ingredientes
 
     application.get('/ingrediente/:id', (req, resp) => {
@@ -138,8 +148,25 @@ module.exports = function (application) {
     })
 
     application.put('/usuario/', (req, resp) => {
-        //TODO implementar atualizacao de dados do usuario
+        new UsuarioBusiness(req).alterar(req.body)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
     })
+
+    application.delete('/usuario', (req, resp) => {
+        new UsuarioBusiness(req).deletar(req.body.usuarioId)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
+            });
+    })
+
 
     //#endregion Usuarios
 
