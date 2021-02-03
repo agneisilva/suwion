@@ -9,8 +9,10 @@ var CreateResponse = class CreateResponse {
         };
     }
 
-    Success(content){
-        return {
+    Success(content, format){
+        return format == FormatType.RAW ? 
+        content : 
+        {
             message: "Sucesso", 
             status: 200, 
             dateTime: null, //TODO implpementar data, 
@@ -18,6 +20,31 @@ var CreateResponse = class CreateResponse {
             content: content || "" 
         };
     }
+
+    AuthSucsess(content){
+        return { 
+            success: true,
+            accessToken: content,
+            expiresIn: process.env.SUWION_JWT_EXPIRESIN || '86400s',
+            dateTime: null,
+            tokenType: 'Bearer', 
+            status: 202//Accepted
+        };
+    }
+
+    AuthErro() {
+        return { 
+            success: false,
+            message: "Não autorizado",
+            status: 401
+        };
+    }
 }
 
+
+const FormatType = {
+    RAW: 0,
+};
+
 exports.CreateResponse = CreateResponse;
+exports.FormatType = FormatType;

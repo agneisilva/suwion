@@ -6,7 +6,7 @@ const ListaCompraBusiness = require('../business/ListaCompraBusiness.js').ListaC
 const path = require('path');
 const dotenvsafe = require("dotenv-safe").config();
 const jwt = require('jsonwebtoken');
-const security = require('../infra/SecurityExtension');
+const { verifyJWT }  = require('../infra/SecurityExtension');
 
 module.exports = function (application) {
 
@@ -21,21 +21,13 @@ module.exports = function (application) {
     //#region Autenticação
 
     application.post('/login', (req, res) => {
-        
-        if (req.body.user === 'teste' && req.body.password === '123') {
-            //auth ok
-            const id = 1; //esse id virá do banco de dados
-
-            const expiresIn = '86400s';// expires in 24horas
-            
-            const token = jwt.sign({ id }, process.env.SECRET, {
-                expiresIn: expiresIn 
+        new UsuarioBusiness().autenticar(req.body)
+            .then(data => {
+                resp.status(data.status).json(data);
+            })
+            .catch(err => {
+                resp.status(err.status).json(err);
             });
-
-            return res.json({ success: true, accessToken: token, expiresIn: expiresIn, tokenType: 'Bearer' });
-        }
-
-        res.status(500).json({ success: false, message: 'Login inválido!' });
     })
 
     //#endregion Autenticação
@@ -43,7 +35,7 @@ module.exports = function (application) {
 
     //#region Ingredientes
 
-    application.get('/ingrediente/:id', security.verifyJWT, (req, resp) => {
+    application.get('/ingrediente/:id', verifyJWT, (req, resp) => {
         new IngredienteBusiness(req).buscarPorId(req.params.id)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -53,7 +45,7 @@ module.exports = function (application) {
             });
     })
 
-    application.get('/ingredientes/:descricao', security.verifyJWT, (req, resp) => {
+    application.get('/ingredientes/:descricao', verifyJWT, (req, resp) => {
         new IngredienteBusiness(req).buscar(req.params.descricao)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -63,7 +55,7 @@ module.exports = function (application) {
             });
     })
 
-    application.get('/ingredientes', security.verifyJWT, (req, resp) => {
+    application.get('/ingredientes', verifyJWT, (req, resp) => {
         new IngredienteBusiness(req).listar(req.body)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -73,7 +65,7 @@ module.exports = function (application) {
             });
     })
 
-    application.post('/ingrediente', security.verifyJWT, (req, resp) => {
+    application.post('/ingrediente', verifyJWT, (req, resp) => {
 
         try {
             new IngredienteBusiness(req).cadastrar(req.body)
@@ -91,7 +83,7 @@ module.exports = function (application) {
 
     })
 
-    application.put('/ingrediente', security.verifyJWT, (req, resp) => {
+    application.put('/ingrediente', verifyJWT, (req, resp) => {
         new IngredienteBusiness(req).alterar(req.body)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -101,7 +93,7 @@ module.exports = function (application) {
             });
     })
 
-    application.delete('/ingrediente', security.verifyJWT, (req, resp) => {
+    application.delete('/ingrediente', verifyJWT, (req, resp) => {
         new IngredienteBusiness(req).deletar(req.body.ingredienteId)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -115,7 +107,7 @@ module.exports = function (application) {
 
     //#region Usuarios
 
-    application.get('/usuario/:id', security.verifyJWT, (req, resp) => {
+    application.get('/usuario/:id', verifyJWT, (req, resp) => {
         new UsuarioBusiness(req).buscarPorId(req.body.usuarioId)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -125,7 +117,7 @@ module.exports = function (application) {
             });
     })
 
-    application.get('/usuario/:email', security.verifyJWT, (req, resp) => {
+    application.get('/usuario/:email', verifyJWT, (req, resp) => {
         new UsuarioBusiness(req).buscarPorEmail(req.body.email)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -135,7 +127,7 @@ module.exports = function (application) {
             });
     })
 
-    application.get('/usuario/:nickname', security.verifyJWT, (req, resp) => {
+    application.get('/usuario/:nickname', verifyJWT, (req, resp) => {
         new UsuarioBusiness(req).buscarPorNickName(req.body.nickname)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -145,7 +137,7 @@ module.exports = function (application) {
             });
     })
 
-    application.get('/usuarios/:nickname', security.verifyJWT, (req, resp) => {
+    application.get('/usuarios/:nickname', verifyJWT, (req, resp) => {
         new UsuarioBusiness(req).listarPorNickName(req.body.nickname)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -155,7 +147,7 @@ module.exports = function (application) {
             });
     })
 
-    application.post('/usuario/', security.verifyJWT, (req, resp) => {
+    application.post('/usuario/', verifyJWT, (req, resp) => {
         new UsuarioBusiness(req).cadastrar(req.body)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -165,7 +157,7 @@ module.exports = function (application) {
             });
     })
 
-    application.put('/usuario/', security.verifyJWT, (req, resp) => {
+    application.put('/usuario/', verifyJWT, (req, resp) => {
         new UsuarioBusiness(req).alterar(req.body)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -175,7 +167,7 @@ module.exports = function (application) {
             });
     })
 
-    application.delete('/usuario', security.verifyJWT, (req, resp) => {
+    application.delete('/usuario', verifyJWT, (req, resp) => {
         new UsuarioBusiness(req).deletar(req.body.usuarioId)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -190,7 +182,7 @@ module.exports = function (application) {
 
     //#region Receitas
 
-    application.get('/receita/:id', security.verifyJWT, (req, resp) => {
+    application.get('/receita/:id', verifyJWT, (req, resp) => {
         new ReceitaBusiness(req).buscarPorId(req.body.receitaId)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -200,7 +192,7 @@ module.exports = function (application) {
             });
     })
 
-    application.post('/receita', security.verifyJWT, (req, resp) => {
+    application.post('/receita', verifyJWT, (req, resp) => {
         new ReceitaBusiness(req).cadastrar(req.body)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -210,7 +202,7 @@ module.exports = function (application) {
             });
     })
 
-    application.post('/receitas/', security.verifyJWT, (req, resp) => {
+    application.post('/receitas/', verifyJWT, (req, resp) => {
         new ReceitaBusiness(req).filtrar(req.body)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -224,15 +216,15 @@ module.exports = function (application) {
 
     //region Social - Receita
 
-    application.post('/social/receita/avaliar', security.verifyJWT, (req, resp) => {
+    application.post('/social/receita/avaliar', verifyJWT, (req, resp) => {
         //TODO implementar avaliacao de receita
     });
 
-    application.post('/social/receita/comentar', security.verifyJWT, (req, resp) => {
+    application.post('/social/receita/comentar', verifyJWT, (req, resp) => {
         //TODO implementar cadastro de comentario em receita
     });
 
-    application.post('/social/receita/compartilharResultado', security.verifyJWT, (req, resp) => {
+    application.post('/social/receita/compartilharResultado', verifyJWT, (req, resp) => {
         //TODO implementar cadastro de resultado de receita (texto, img e/ou vídeo do resultado de fazer a receita)
     });
 
@@ -240,7 +232,7 @@ module.exports = function (application) {
 
     //#region Cardapios
 
-    application.post('/cardapio/', security.verifyJWT, (req, resp) => {
+    application.post('/cardapio/', verifyJWT, (req, resp) => {
         new CardapioBusiness(req).cadastrar(req.body)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -250,7 +242,7 @@ module.exports = function (application) {
             });
     });
 
-    application.post('/cardapios/', security.verifyJWT, (req, resp) => {
+    application.post('/cardapios/', verifyJWT, (req, resp) => {
         new CardapioBusiness(req).filtrar(req.body)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -264,7 +256,7 @@ module.exports = function (application) {
 
     //#region Listas de Compras
 
-    application.post('/listaCompra/receita', security.verifyJWT, (req, resp) => {
+    application.post('/listaCompra/receita', verifyJWT, (req, resp) => {
         new ListaCompraBusiness(req).criarPorReceita(req.body)
             .then(data => {
                 resp.status(data.status).json(data);
@@ -274,7 +266,7 @@ module.exports = function (application) {
             });
     });
 
-    application.post('/listaCompra/cardapio', security.verifyJWT, (req, resp) => {
+    application.post('/listaCompra/cardapio', verifyJWT, (req, resp) => {
         new ListaCompraBusiness(req).criarPorCardapio(req.body)
             .then(data => {
                 resp.status(data.status).json(data);
