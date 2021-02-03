@@ -1,5 +1,5 @@
-const ReceitaDAO = require('../dao/ReceitaDAO.js').ReceitaDAO;
-const CreateResponse = require('../infra/CreateResponse.js').CreateResponse;
+const ReceitaDAO = require('../dao/receitaDAO.js').ReceitaDAO;
+const CreateResponse = require('../infra/createResponse.js').CreateResponse;
 
 var ReceitaBusiness = class ReceitaBusiness {
     constructor(require) {

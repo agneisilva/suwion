@@ -1,5 +1,5 @@
-const IngredienteDAO = require('../dao/IngredienteDAO.js').IngredienteDAO;
-const CreateResponse = require('../infra/CreateResponse.js').CreateResponse;
+const IngredienteDAO = require('../dao/ingredienteDAO.js').IngredienteDAO;
+const CreateResponse = require('../infra/createResponse.js').CreateResponse;
 const { v4:uuid } = require('uuid');
 
 var IngredienteBusiness = class IngredienteBusiness {

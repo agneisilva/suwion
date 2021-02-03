@@ -1,5 +1,5 @@
-const ListaCompraDAO = require('../dao/ListaCompraDAO.js').ListaCompraDAO;
-const CreateResponse = require('../infra/CreateResponse.js').CreateResponse;
+const ListaCompraDAO = require('../dao/listaCompraDAO.js').ListaCompraDAO;
+const CreateResponse = require('../infra/createResponse.js').CreateResponse;
 
 var ListaCompraBusiness = class ListaCompraBusiness {
     constructor(require) {

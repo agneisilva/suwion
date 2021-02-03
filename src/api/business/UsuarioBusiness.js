@@ -1,6 +1,6 @@
-const UsuarioDAO = require('../dao/UsuarioDAO.js').UsuarioDAO;
-const { CreateResponse, FormatType: Formato } = require('../infra/CreateResponse.js');
-const { genRandomString, sha512 } = require('../infra/SecurityExtension');
+const UsuarioDAO = require('../dao/usuarioDAO.js').UsuarioDAO;
+const { CreateResponse, FormatType: Formato } = require('../infra/createResponse.js');
+const { genRandomString, sha512 } = require('../infra/securityExtension');
 const jwt = require('jsonwebtoken');
 
 var UsuarioBusiness = class UsuarioBusiness {

@@ -1,5 +1,5 @@
-const CardapioDAO = require('../dao/CardapioDAO.js').CardapioDAO;
-const CreateResponse = require('../infra/CreateResponse.js').CreateResponse;
+const CardapioDAO = require('../dao/cardapioDAO.js').CardapioDAO;
+const CreateResponse = require('../infra/createResponse.js').CreateResponse;
 
 var CardapioBusiness = class CardapioBusiness {
     constructor(require) {
