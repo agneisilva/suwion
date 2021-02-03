@@ -1,6 +1,7 @@
 const UsuarioDAO = require('../dao/UsuarioDAO.js').UsuarioDAO;
 const { CreateResponse, FormatType: Formato } = require('../infra/CreateResponse.js');
 const { genRandomString, sha512 } = require('../infra/SecurityExtension');
+const jwt = require('jsonwebtoken');
 
 var UsuarioBusiness = class UsuarioBusiness {
     constructor(require) {
@@ -30,7 +31,7 @@ var UsuarioBusiness = class UsuarioBusiness {
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Buscar Usuario!"));
+                    rej(new CreateResponse().Erro("Erro ao Buscar Usuário!"));
                 });
         });
     }
@@ -58,7 +59,7 @@ var UsuarioBusiness = class UsuarioBusiness {
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Localizar Usuarios!"));
+                    rej(new CreateResponse().Erro("Erro ao Buscar Usuarios!"));
                 });
         });
     }
@@ -67,13 +68,13 @@ var UsuarioBusiness = class UsuarioBusiness {
 
         return new Promise((res, rej) => {
 
-            usuario.salt = genRandomString(1);
+            usuario.salt = genRandomString(10);
             usuario.senha = sha512(usuario.senha, usuario.salt);
 
             new UsuarioDAO(this._require.db).cadastrar(usuario)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success(data, format));
+                    res(new CreateResponse().Success({Id: data._id, nickName: data.nickName}, format));
                 })
                 .catch((err) => {
                     //Error
@@ -84,14 +85,19 @@ var UsuarioBusiness = class UsuarioBusiness {
 
     alterar(usuario, format) {
         return new Promise((res, rej) => {
+
+            usuario.salt = genRandomString(10);
+            usuario.senha = sha512(usuario.senha, usuario.salt);
+
+
             new UsuarioDAO(this._require.db).alterar(usuario)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success("Sucesso ao Alterar Ingrediente!", format));
+                    res(new CreateResponse().Success("Sucesso ao Alterar Usuário!", format));
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Alterar Ingrediente!"));
+                    rej(new CreateResponse().Erro("Erro ao Alterar Usuário!"));
                 });
         });
     }
@@ -101,11 +107,11 @@ var UsuarioBusiness = class UsuarioBusiness {
             new UsuarioDAO(this._require.db).deletar(usuarioId)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success("Sucesso ao Deletar Ingrediente!", format));
+                    res(new CreateResponse().Success("Sucesso ao Deletar Usuário!", format));
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Deletar Ingrediente!"));
+                    rej(new CreateResponse().Erro("Erro ao Deletar Usuário!"));
                 });
         });
     }
@@ -114,42 +120,24 @@ var UsuarioBusiness = class UsuarioBusiness {
         return new Promise((res, rej) => {
             this.buscarPorNickName(login, Formato.RAW)
                 .then(usuario => {
-                    var salt = usuario.salt;
 
-                    var hashbanco = sha512(usuario.senha, salt);
-                    var hashreq = sha512(senha, salt);
+                    if(!usuario) return res(new CreateResponse().AuthErro());
 
-                    if (hashbanco === hashreq) {
-                        const token = jwt.sign({ id }, process.env.SECRET, {
-                            expiresIn: process.env.SUWION_JWT_EXPIRESIN || '86400s' //24horas
-                        });
+                    var hashreq = sha512(senha,  usuario.salt);
+
+                    if (usuario.senha === hashreq) {
+                        const token = jwt.sign(
+                            { usuarioId: usuario._id },
+                            process.env.SECRET,
+                            { expiresIn: process.env.SUWION_JWT_EXPIRESIN || '86400s' /*24horas*/ });
 
                         res(new CreateResponse().AuthSucsess(token));
                     }
-                    else{
+                    else {
                         res(new CreateResponse().AuthErro());
                     }
                 });
         });
-
-
-
-        if (req.body.login === 'teste' && req.body.senha === '123') {
-
-            //auth ok
-            const id = 1; //esse id virá do banco de dados
-
-
-
-            const token = jwt.sign({ id }, process.env.SECRET, {
-                expiresIn: expiresIn
-            });
-
-            return res.json({ success: true, accessToken: token, expiresIn: expiresIn, tokenType: 'Bearer' });
-        }
-
-        res.status(500).json({ success: false, message: 'Login inválido!' });
-
     }
 }
 

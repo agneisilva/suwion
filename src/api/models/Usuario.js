@@ -6,7 +6,7 @@ var Usuario = class Usuario {
         this.email = email;
         this.nickname = nickname;
         this.senha = senha;  
-        this.salt = salt
+        this.salt = salt; 
     }
 }
 

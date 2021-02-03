@@ -5,7 +5,6 @@ const CardapioBusiness = require('../business/CardapioBusiness.js').CardapioBusi
 const ListaCompraBusiness = require('../business/ListaCompraBusiness.js').ListaCompraBusiness;
 const path = require('path');
 const dotenvsafe = require("dotenv-safe").config();
-const jwt = require('jsonwebtoken');
 const { verifyJWT }  = require('../infra/SecurityExtension');
 
 module.exports = function (application) {
@@ -21,12 +20,12 @@ module.exports = function (application) {
     //#region Autenticação
 
     application.post('/login', (req, res) => {
-        new UsuarioBusiness().autenticar(req.body)
+        new UsuarioBusiness(req).autenticar(req.body)
             .then(data => {
-                resp.status(data.status).json(data);
+                res.status(data.status).json(data);
             })
             .catch(err => {
-                resp.status(err.status).json(err);
+                res.status(err.status).json(err);
             });
     })
 
@@ -73,8 +72,7 @@ module.exports = function (application) {
                     resp.status(data.status).json(data);
                 })
                 .catch(err => {
-                    console.log(err.message);
-                    //resp.status(err.status).json(err);
+                    resp.status(err.status).json(err);
                 });
         }
         catch (err) {
@@ -147,7 +145,7 @@ module.exports = function (application) {
             });
     })
 
-    application.post('/usuario/', verifyJWT, (req, resp) => {
+    application.post('/usuario/', (req, resp) => {
         new UsuarioBusiness(req).cadastrar(req.body)
             .then(data => {
                 resp.status(data.status).json(data);

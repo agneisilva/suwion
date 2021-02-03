@@ -37,7 +37,7 @@ var UsuarioDAO = class UsuarioDAO {
         const query = { nickName: nickName };
 
         return new Promise((res, rej) => {
-            this.collection.find(query).toArray((err, result) => {
+            this.collection.findOne(query, (err, result) => {
                 if (err) rej(err);
 
                 res(result);

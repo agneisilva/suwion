@@ -7,13 +7,15 @@ var verifyJWT = function(req, res, next) {
     
     token = token && token.split(' ')[1];
 
-    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+    const naoAutorizadoMsg = 'Não autorizado';
+
+    if (!token) return res.status(401).send({ auth: false, message: naoAutorizadoMsg });
 
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
-        if (err) return res.status(401).send({ auth: false, message: 'Invalid token.' });
+        if (err) return res.status(401).send({ auth: false, message: naoAutorizadoMsg });
 
-        // se tudo estiver ok, salva no request para uso posterior
-        req.userId = decoded.id;
+        req.usuarioId = decoded.usuarioId;
+        
         next();
     });
 }
@@ -39,11 +41,7 @@ var genRandomString = function(length){
 var sha512 = function(password, salt){
     var hash = crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
     hash.update(password);
-    var value = hash.digest('hex');
-    return {
-        salt:salt,
-        passwordHash:value
-    };
+    return hash.digest('hex');
 };
 
 exports.verifyJWT = verifyJWT;
