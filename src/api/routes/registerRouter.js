@@ -1,13 +1,11 @@
 const path = require('path');
-const AutenticacaoController = require('./autenticacaoController.js').AutenticacaoController;
-const CardapioController = require('./cardapioController.js').CardapioController;
-const IngredienteController = require('./ingredienteController.js').IngredienteController;
-const ReceitaController = require('./receitaController.js').ReceitaController;
-const SocialController = require('./socialController.js').SocialController;
-const ToolsController = require('./toolsController.js').ToolsController;
-const UsuarioController = require('./usuarioController.js').UsuarioController;
-
-
+const AutenticacaoRoutes = require('./autenticacaoRoutes.js').AutenticacaoRoutes;
+const CardapioRoutes = require('./cardapioRoutes.js').CardapioRoutes;
+const IngredienteRoutes = require('./ingredienteRoutes.js').IngredienteRoutes;
+const ReceitaRoutes = require('./receitaRoutes.js').ReceitaRoutes;
+const SocialRoutes = require('./socialRoutes.js').SocialRoutes;
+const ToolsRoutes = require('./toolsRoutes.js').ToolsRoutes;
+const UsuarioRoutes = require('./usuarioRoutes.js').UsuarioRoutes;
 
 module.exports = function (app) {
 
@@ -15,12 +13,15 @@ module.exports = function (app) {
         res.sendFile(path.join(__dirname + '/../index.html'));
     });
 
-    new AutenticacaoController(app).registrarRotas();
-    new CardapioController(app).registrarRotas();
-    new IngredienteController(app).registrarRotas();
-    new ReceitaController(app).registrarRotas();
-    new SocialController(app).registrarRotas();
-    new ToolsController(app).registrarRotas();
-    new UsuarioController(app).registrarRotas();
-    
+    new AutenticacaoRoutes(app).registrarRotas();
+    new CardapioRoutes(app).registrarRotas();
+    new IngredienteRoutes(app).registrarRotas();
+    new ReceitaRoutes(app).registrarRotas();
+    new SocialRoutes(app).registrarRotas();
+    new ToolsRoutes(app).registrarRotas();
+    new UsuarioRoutes(userDenpendencies(app)).registrarRotas();
+
 }
+
+
+

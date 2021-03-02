@@ -1,7 +1,4 @@
-const { verifyJWT } = require('../infra/securityExtension');
-
-
-var ToolsController = class ToolsController {
+var ToolsRoutes = class ToolsRoutes {
     constructor(application) {
         this._application = application;
     }
@@ -15,4 +12,4 @@ var ToolsController = class ToolsController {
 
 }
 
-exports.ToolsController = ToolsController;
+exports.ToolsRoutes = ToolsRoutes;

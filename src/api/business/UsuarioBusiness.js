@@ -1,23 +1,24 @@
-const UsuarioDAO = require('../dao/usuarioDAO.js').UsuarioDAO;
-const { CreateResponse, FormatType: Formato } = require('../infra/createResponse.js');
+//const UsuarioDAO = require('../dao/usuarioDAO.js').UsuarioDAO;
+const { FormatType: Formato } = require('../infra/createResponse.js');
 const { genRandomString, sha512 } = require('../infra/securityExtension');
 const jwt = require('jsonwebtoken');
 
 var UsuarioBusiness = class UsuarioBusiness {
-    constructor(require) {
-        this._require = require;
+    constructor({userDao, createResponse}) {
+        this._userDao = userDao;
+        this._createResponse = createResponse;
     }
 
     buscarPorId(usuarioId, format) {
         return new Promise((res, rej) => {
-            new UsuarioDAO(this._require.db).buscarPorId(usuarioId)
+            this._userDao.buscarPorId(usuarioId)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success(data, format));
+                    res(this._createResponse.Success(data, format));
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Buscar Usuario!"));
+                    rej(this._createResponse.Erro("Erro ao Buscar Usuario!"));
                 });
         });
     }
@@ -66,44 +67,60 @@ var UsuarioBusiness = class UsuarioBusiness {
 
     cadastrar(usuario, format) {
 
-        return new Promise((res, rej) => {
+        return new Promise(async (res, rej) => {
+
+            const result = await Promise.all(
+                            [
+                                this.buscarPorNickName(usuario.nickName, Formato.RAW), 
+                                this.buscarPorEmail(usuario.email, Formato.RAW)
+                            ])
+
+            if (result[0] || result[1])
+                return rej(new CreateResponse().Erro("Usuário já cadastrado"));
 
             usuario.salt = genRandomString(10);
             usuario.senha = sha512(usuario.senha, usuario.salt);
 
             new UsuarioDAO(this._require.db).cadastrar(usuario)
                 .then((data) => {
-                    //Success
-                    res(new CreateResponse().Success({Id: data._id, nickName: data.nickName}, format));
+                    res(new CreateResponse().Success({ Id: data._id, NickName: data.nickName }, format));
                 })
                 .catch((err) => {
-                    //Error
                     rej(new CreateResponse().Erro("Erro ao Cadastrar Usuário!"));
                 });
         });
     }
 
     alterar(usuario, format) {
-        return new Promise((res, rej) => {
+        return new Promise(async (res, rej) => {
+
+            const usuarioExistente = await this.buscarPorId(usuario._id, Formato.RAW);
+
+            if (!usuarioExistente)
+                return rej(new CreateResponse().Erro("Usuário não encontrado!"));
 
             usuario.salt = genRandomString(10);
             usuario.senha = sha512(usuario.senha, usuario.salt);
-
+            usuario.nickName = usuarioExistente.nickName;
 
             new UsuarioDAO(this._require.db).alterar(usuario)
                 .then((data) => {
-                    //Success
                     res(new CreateResponse().Success("Sucesso ao Alterar Usuário!", format));
                 })
                 .catch((err) => {
-                    //Error
                     rej(new CreateResponse().Erro("Erro ao Alterar Usuário!"));
                 });
         });
     }
 
     deletar(usuarioId, format) {
-        return new Promise((res, rej) => {
+        return new Promise(async (res, rej) => {
+
+            var usuarioExistente = await this.buscarPorId(usuarioId, Formato.RAW);
+
+            if (!usuarioExistente)
+                return rej(new CreateResponse().Erro("Usuário não encontrado!"));
+
             new UsuarioDAO(this._require.db).deletar(usuarioId)
                 .then((data) => {
                     //Success
@@ -121,9 +138,9 @@ var UsuarioBusiness = class UsuarioBusiness {
             this.buscarPorNickName(login, Formato.RAW)
                 .then(usuario => {
 
-                    if(!usuario) return res(new CreateResponse().AuthErro());
+                    if (!usuario) return res(new CreateResponse().AuthErro());
 
-                    var hashreq = sha512(senha,  usuario.salt);
+                    var hashreq = sha512(senha, usuario.salt);
 
                     if (usuario.senha === hashreq) {
                         const token = jwt.sign(

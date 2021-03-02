@@ -24,8 +24,9 @@ const uri = process.env.SUWION_MONGO_CONN_STR || "mongodb://root:MongoDB2019!@lo
 // +PQzp/B9cQmOO8dCe049Q3oaUA==
 // -----END CERTIFICATE-----`;
 
-module.exports = property => {
+module.exports = () => {
     var connection;
+    const property = "db";
 
     return (req, res, next) => {
         if (!connection)

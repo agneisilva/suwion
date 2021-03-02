@@ -1,8 +1,9 @@
 const { verifyJWT } = require('../infra/securityExtension');
 const IngredienteBusiness = require('../business/ingredienteBusiness.js').IngredienteBusiness;
+const { criarIngredienteRules, alterarIngredienteRules, deletarIngredienteRules, validate } = require('../business/validacoes/ingredienteValidacao');
+const Ingrediente = require('../models/ingrediente').Ingrediente;
 
-
-var IngredienteController = class IngredienteController {
+var IngredienteRoutes = class IngredienteRoutes {
     constructor(application) {
         this._application = application;
     }
@@ -40,26 +41,20 @@ var IngredienteController = class IngredienteController {
                 });
         })
 
-        this._application.post('/ingrediente', verifyJWT, (req, resp) => {
-
-            try {
-                new IngredienteBusiness(req).cadastrar(req.body)
-                    .then(data => {
-                        resp.status(data.status).json(data);
-                    })
-                    .catch(err => {
-                        console.log(err.message);
-                        //resp.status(err.status).json(err);
-                    });
-            }
-            catch (err) {
-                console.log(err.message);
-            }
+        this._application.post('/ingrediente', criarIngredienteRules(), validate, verifyJWT, (req, resp) => {
+            new IngredienteBusiness(req).cadastrar(new Ingrediente(req.body))
+                .then(data => {
+                    resp.status(data.status).json(data);
+                })
+                .catch(err => {
+                    console.log(err.message);
+                    //resp.status(err.status).json(err);
+                });
 
         })
 
-        this._application.put('/ingrediente', verifyJWT, (req, resp) => {
-            new IngredienteBusiness(req).alterar(req.body)
+        this._application.put('/ingrediente', alterarIngredienteRules(), validate, verifyJWT, (req, resp) => {
+            new IngredienteBusiness(req).alterar(new Ingrediente(req.body))
                 .then(data => {
                     resp.status(data.status).json(data);
                 })
@@ -68,7 +63,7 @@ var IngredienteController = class IngredienteController {
                 });
         })
 
-        this._application.delete('/ingrediente', verifyJWT, (req, resp) => {
+        this._application.delete('/ingrediente', deletarIngredienteRules(), validate, verifyJWT, (req, resp) => {
             new IngredienteBusiness(req).deletar(req.body.ingredienteId)
                 .then(data => {
                     resp.status(data.status).json(data);
@@ -85,4 +80,4 @@ var IngredienteController = class IngredienteController {
 }
 
 
-exports.IngredienteController = IngredienteController;
+exports.IngredienteRoutes = IngredienteRoutes;

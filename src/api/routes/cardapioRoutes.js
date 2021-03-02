@@ -2,7 +2,7 @@ const { verifyJWT } = require('../infra/securityExtension');
 const CardapioBusiness = require('../business/cardapioBusiness.js').CardapioBusiness;
 
 
-var CardapioController = class CardapioController {
+var CardapioRoutes = class CardapioRoutes {
     constructor(application) {
         this._application = application;
     }
@@ -36,4 +36,4 @@ var CardapioController = class CardapioController {
 
 }
 
-exports.CardapioController = CardapioController;
+exports.CardapioRoutes = CardapioRoutes;

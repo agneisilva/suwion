@@ -1,6 +1,6 @@
 const { verifyJWT }  = require('../infra/securityExtension');
 
-var SocialController = class SocialController {
+var SocialRoutes = class SocialRoutes {
     constructor(application) {
         this._application = application;
     }
@@ -25,4 +25,4 @@ var SocialController = class SocialController {
 }
 
 
-exports.SocialController = SocialController;
+exports.SocialRoutes = SocialRoutes;

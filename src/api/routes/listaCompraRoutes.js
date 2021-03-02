@@ -2,7 +2,7 @@ const { verifyJWT } = require('../infra/securityExtension');
 const ListaCompraBusiness = require('../business/listaCompraBusiness.js').ListaCompraBusiness;
 
 
-var ListaCompraController = class ListaCompraController {
+var ListaCompraRoutes = class ListaCompraRoutes {
     constructor(application) {
         this._application = application;
     }
@@ -37,4 +37,4 @@ var ListaCompraController = class ListaCompraController {
 }
 
 
-exports.ListaCompraController = ListaCompraController;
+exports.ListaCompraRoutes = ListaCompraRoutes;

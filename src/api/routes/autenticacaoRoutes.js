@@ -1,7 +1,6 @@
-const { verifyJWT } = require('../infra/securityExtension');
+const { logarUsuarioRules, validate } = require('../business/validacoes/usuarioValidacao');
 
-
-var AutenticacaoController = class AutenticacaoController {
+var AutenticacaoRoutes = class AutenticacaoRoutes {
     constructor(application) {
         this._application = application;
     }
@@ -10,7 +9,7 @@ var AutenticacaoController = class AutenticacaoController {
 
         //#region Autenticação
 
-        this._application.post('/login', (req, res) => {
+        this._application.post('/login', logarUsuarioRules(), validate, (req, res) => {
             new UsuarioBusiness(req).autenticar(req.body)
                 .then(data => {
                     res.status(data.status).json(data);
@@ -26,4 +25,4 @@ var AutenticacaoController = class AutenticacaoController {
 }
 
 
-exports.AutenticacaoController = AutenticacaoController;
+exports.AutenticacaoRoutes = AutenticacaoRoutes;

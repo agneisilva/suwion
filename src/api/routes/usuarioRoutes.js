@@ -1,17 +1,22 @@
 const { verifyJWT } = require('../infra/securityExtension');
 const UsuarioBusiness = require('../business/usuarioBusiness.js').UsuarioBusiness;
+const Usuario = require('../models/usuario').Usuario;
+const {
+    criarUsuarioRules,
+    alterarUsuarioRules,
+    deletarUsuarioRules,
+    validate
+} = require('../business/validacoes/usuarioValidacao');
 
-
-var UsuarioController = class UsuarioController {
-    constructor(application) {
-        this._application = application;
-    }
+var UsuarioRoutes = class UsuarioRoutes {
+    constructor() { }
 
     registrarRotas() {
         //#region Usuarios
 
         this._application.get('/usuario/:id', verifyJWT, (req, resp) => {
-            new UsuarioBusiness(req).buscarPorId(req.body.usuarioId)
+
+            this._userBusiness.buscarPorId(req.body.usuarioId)
                 .then(data => {
                     resp.status(data.status).json(data);
                 })
@@ -50,8 +55,8 @@ var UsuarioController = class UsuarioController {
                 });
         })
 
-        this._application.post('/usuario/', (req, resp) => {
-            new UsuarioBusiness(req).cadastrar(req.body)
+        this._application.post('/usuario/', criarUsuarioRules(), validate, (req, resp) => {
+            new UsuarioBusiness(req).cadastrar(new Usuario(req.body))
                 .then(data => {
                     resp.status(data.status).json(data);
                 })
@@ -60,8 +65,8 @@ var UsuarioController = class UsuarioController {
                 });
         })
 
-        this._application.put('/usuario/', verifyJWT, (req, resp) => {
-            new UsuarioBusiness(req).alterar(req.body)
+        this._application.put('/usuario/', alterarUsuarioRules(), validate, verifyJWT, (req, resp) => {
+            new UsuarioBusiness(req).alterar(new Usuario(req.body))
                 .then(data => {
                     resp.status(data.status).json(data);
                 })
@@ -70,7 +75,7 @@ var UsuarioController = class UsuarioController {
                 });
         })
 
-        this._application.delete('/usuario', verifyJWT, (req, resp) => {
+        this._application.delete('/usuario', deletarUsuarioRules(), validate, verifyJWT, (req, resp) => {
             new UsuarioBusiness(req).deletar(req.body.usuarioId)
                 .then(data => {
                     resp.status(data.status).json(data);
@@ -85,4 +90,4 @@ var UsuarioController = class UsuarioController {
 }
 
 
-exports.UsuarioController = UsuarioController;
+exports.UsuarioRoutes = UsuarioRoutes;

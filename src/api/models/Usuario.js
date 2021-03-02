@@ -1,12 +1,12 @@
 
 var Usuario = class Usuario {
-    constructor(id, nome, email, nickname) {
-        this._id = id; 
-        this.nome = nome;
-        this.email = email;
-        this.nickname = nickname;
-        this.senha = senha;  
-        this.salt = salt; 
+    constructor(args) {
+        this._id = args.id; 
+        this.nome = args.nome;
+        this.email = args.email;
+        this.nickName = args.nickName;
+        this.senha = args.senha;  
+        this.salt = args.salt; 
     }
 }
 

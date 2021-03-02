@@ -2,7 +2,7 @@ const { verifyJWT } = require('../infra/securityExtension');
 const ReceitaBusiness = require('../business/receitaBusiness.js').ReceitaBusiness;
 
 
-var ReceitaController = class ReceitaController {
+var ReceitaRoutes = class ReceitaRoutes {
     constructor(application) {
         this._application = application;
     }
@@ -47,4 +47,4 @@ var ReceitaController = class ReceitaController {
 }
 
 
-exports.ReceitaController = ReceitaController;
+exports.ReceitaRoutes = ReceitaRoutes;

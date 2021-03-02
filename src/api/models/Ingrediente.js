@@ -1,8 +1,8 @@
 
 var Ingrediente = class Ingrediente {
-    constructor(id, descricao) {
-        this._id = id 
-        this.descricao = descricao
+    constructor(args) {
+        this._id = args.id 
+        this.descricao = args.descricao
     }
 }
 
