@@ -1,15 +1,32 @@
 const reqAccessKey = "$$";
 const isClass = fn => /^\s*class/.test(fn.toString());
 
+var leDependecie;
 
-(req, res, next) => { dependencyInjection(this, this.dependencyMap, req); next(); }
+var ResolveDependencyInjection = (allMaps) => {
+    return (req, res, next) => {
+        if (!leDependecie) {
+            leDependecie = {};
+            let keys = Object.keys(allMaps);
+            for(let key in keys){
+                leDependecie[keys[key]] = dependenciesResolve(allMaps[keys[key]], req);
+            }
+        }
+        
+        req.dependencies = leDependecie;
 
-module.exports = (origin, dependencyMap, req) => {
-    let dependencies = dependenciesResolve(dependencyMap, req);
+        next();
+    };
+}
 
-    for (let dependency in Object.keys(dependencies)) {
-        origin[dependency] = dependencies[dependency];
+const LoadDependencies = (context, dependencies)=>{
+
+    let keys = Object.keys(dependencies[context.constructor.name]);
+    for (let dependency in keys) {
+        context[keys[dependency]] = dependencies[context.constructor.name][keys[dependency]];
     }
+
+    return context;
 }
 
 const dependenciesResolve = (dependencyMap, req) => {
@@ -18,14 +35,15 @@ const dependenciesResolve = (dependencyMap, req) => {
         if (dependencyMap[dependency] instanceof DependenceStructure) {
             //Verifica se a dependencia precisa ser instanciada (class)
             if (!!dependencyMap[dependency].class && isClass(dependencyMap[dependency].class)) {
-                let args = {};
-                //chamar recursivo para resolver as dependencias da dependencia
-                for (let innerDependence in dependencyMap[dependency].dependencies) {
+                let args;
+                if(dependencyMap[dependency].dependencies.length > 0) args = dependenciesResolve(dependencyMap[dependency].dependencies, req);
+                // //chamar recursivo para resolver as dependencias da dependencia
+                // for (let innerDependence in dependencyMap[dependency].dependencies) {
 
-                    args = Object.assign(
-                        dependenciesResolve(dependencyMap[dependency].dependencies[innerDependence], req),
-                        args);
-                }
+                //     args = Object.assign(
+                //         dependenciesResolve(dependencyMap[dependency].dependencies, req),
+                //         args);
+                // }
                 //Instanciar dependencia
                 toInject[dependencyMap[dependency].name] = new dependencyMap[dependency].class(args);
             } else {
@@ -48,7 +66,7 @@ const DependenceStructure = class DependenceStructure {
     constructor(_name, _class, _dependencies, _builder) {
         this.name = _name;
         this.class = _class;
-        if (!!_dependencies) this.dependencies = _dependencies || [];
+        this.dependencies = _dependencies || [];
         if (!!_builder) this.builder = _builder;
     }
 
@@ -56,10 +74,10 @@ const DependenceStructure = class DependenceStructure {
         if (!!this.builder) {
             if (!this.dependencies || !Array.isArray(this.dependencies))
                 this.dependencies = [];
-            
-            if(!!this.builder.map[name]){
-               dependencies.push(this.builder.map[name]);
-               this.builder.dependencies.push(name);
+
+            if (!!this.builder.map[name]) {
+                this.dependencies.push(this.builder.map[name]);
+                this.builder.dependencies.push(name);
             }
         }
         return this;
@@ -70,7 +88,7 @@ const DependenceStructure = class DependenceStructure {
             return this.builder.register(dependency);
     }
 
-    addDependencyTree(tree){
+    addDependencyTree(tree) {
         if (!!this.builder)
             return this.builder.addDependencyTree(tree);
     }
@@ -89,21 +107,22 @@ const DependencyBuilder = class DependencyBuilder {
     }
 
     getMap() {
-        let resultMap  = []; 
-        for (const key in Object.keys(this.map)) {
-            if(!dependencies.includes(key))
-                resultMap.push(this.map[key]);
+        let resultMap = [];
+        let keys = Object.keys(this.map);
+        for (const key in keys) {
+            if (!this.dependencies.includes(keys[key]))
+                resultMap.push(this.map[keys[key]]);
         }
 
         return resultMap;
     }
 
-    addDependencyTree(tree){
+    addDependencyTree(tree) {
         var nodes = tree.split(".");
 
-        if(nodes.length <= 1) return this;
+        if (nodes.length <= 1) return this;
 
-        for (let index = 1; index < nodes.length; index++) {
+        for (let index = nodes.length-1; index > 0; index--) {
             this.map[nodes[index - 1]].addDependency(nodes[index]);
         }
 
@@ -113,3 +132,5 @@ const DependencyBuilder = class DependencyBuilder {
 
 exports.DependenceStructure = DependenceStructure;
 exports.DependencyBuilder = DependencyBuilder;
+exports.ResolveDependencyInjection = ResolveDependencyInjection;
+exports.LoadDependencies = LoadDependencies;

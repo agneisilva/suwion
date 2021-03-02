@@ -21,6 +21,7 @@ var SocialRoutes = class SocialRoutes {
         });
     
         //#endregion Social - Receita
+        return this;
     }
 }
 

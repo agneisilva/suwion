@@ -74,7 +74,7 @@ var IngredienteRoutes = class IngredienteRoutes {
         })
 
         //#endregion Ingredientes
-
+        return this;
     }
 
 }

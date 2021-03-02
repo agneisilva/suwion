@@ -31,6 +31,7 @@ var CardapioRoutes = class CardapioRoutes {
         });
 
         //#endregion Cardapios
+        return this;
 
     }
 

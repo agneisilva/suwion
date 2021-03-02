@@ -7,7 +7,7 @@ var ToolsRoutes = class ToolsRoutes {
         this._application.get("/tools/hc", (req, resp) => {
             resp.status(200).json({ "status": "RUNNING" });
         });
-   
+        return this;
     }
 
 }

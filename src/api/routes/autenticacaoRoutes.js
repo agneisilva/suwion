@@ -19,6 +19,8 @@ var AutenticacaoRoutes = class AutenticacaoRoutes {
                 });
         })
 
+        return this;
+
         //#endregion Autenticação
     }
 

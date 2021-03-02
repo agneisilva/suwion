@@ -1,8 +1,12 @@
 const { Ingrediente } = require('../../models/ingrediente.js');
-const userDenpendencies = require('../config/dependenciesMap/user.js');
+const userDenpendencies = require('./user.js');
 
 module.exports = (app) => {
-    return [{
+    return {
+        UsuarioRoutes: userDenpendencies(app)
+    }
+    
+    /*[{
         user: {
             route: "/usuario/*",
             functionMap: userDenpendencies(app)
@@ -11,5 +15,5 @@ module.exports = (app) => {
             route: "/ingrediente/*",
             functionMap: userDenpendencies(app) //TODO
         }
-    }]
+    }]*/
 }

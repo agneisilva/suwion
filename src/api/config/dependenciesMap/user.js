@@ -1,7 +1,7 @@
 const UsuarioDAO = require('../../dao/usuarioDAO.js').UsuarioDAO;
 const UsuarioBusiness = require('../../business/usuarioBusiness.js').UsuarioBusiness;
 const CreateResponse = require('../../infra/createResponse.js').CreateResponse;
-const { DependencyBuilder } = require('../../infra/dependencyInjection.js');
+const DependencyBuilder = require('../../infra/dependencyInjection.js').DependencyBuilder;
 
 module.exports = (app) => {
     let builder = new DependencyBuilder();
@@ -38,23 +38,19 @@ module.exports = (app) => {
         value: "$$db"
     })
     .register({
-        name: "_userDao",
+        name: "userDao",
         entity: UsuarioDAO
     })
     .register({
-        name: "_createResponse",
+        name: "createResponse",
         entity: CreateResponse,
     })
     .register({
         name: "_userBusiness",
         entity: UsuarioBusiness
     })
-    .register({
-        name: "_application",
-        value: app
-    })
-    .addDependencyTree("_userBusiness._userDao.connection")
-    .addDependencyTree("_userBusiness._createResponse");
+    .addDependencyTree("_userBusiness.userDao.connection")
+    .addDependencyTree("_userBusiness.createResponse");
 
     return builder.getMap();
 

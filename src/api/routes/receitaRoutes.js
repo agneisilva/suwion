@@ -41,7 +41,7 @@ var ReceitaRoutes = class ReceitaRoutes {
         })
 
         //#endregion Receitas
-
+        return this;
     }
 
 }
