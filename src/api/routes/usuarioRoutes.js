@@ -17,9 +17,9 @@ var UsuarioRoutes = class UsuarioRoutes {
     registrarRotas() {
         //#region Usuarios
 
-        this._application.get('/usuario/:id', verifyJWT, (req, resp) => {
+        this._application.get('/usuario/:id', verifyJWT, dependencies(this), (req, resp) => {
 
-            dependencies(this, req.dependencies)._userBusiness.buscarPorId(req.body.usuarioId)
+            this._userBusiness.buscarPorId(req.body.usuarioId)
                 .then(data => {
                     resp.status(data.status).json(data);
                 })
@@ -28,8 +28,8 @@ var UsuarioRoutes = class UsuarioRoutes {
                 });
         })
 
-        this._application.get('/usuario/:email', verifyJWT, (req, resp) => {
-            dependencies(this, req.dependencies).buscarPorEmail(req.body.email)
+        this._application.get('/usuario/:email', verifyJWT, dependencies(this), (req, resp) => {
+            this._userBusiness.buscarPorEmail(req.body.email)
                 .then(data => {
                     resp.status(data.status).json(data);
                 })
@@ -38,8 +38,8 @@ var UsuarioRoutes = class UsuarioRoutes {
                 });
         })
 
-        this._application.get('/usuario/:nickname', verifyJWT, (req, resp) => {
-            dependencies(this, req.dependencies).buscarPorNickName(req.body.nickname)
+        this._application.get('/usuario/:nickname', verifyJWT, dependencies(this), (req, resp) => {
+            this._userBusiness.buscarPorNickName(req.body.nickname)
                 .then(data => {
                     resp.status(data.status).json(data);
                 })
@@ -48,8 +48,8 @@ var UsuarioRoutes = class UsuarioRoutes {
                 });
         })
 
-        this._application.get('/usuarios/:nickname', verifyJWT, (req, resp) => {
-            dependencies(this, req.dependencies).listarPorNickName(req.body.nickname)
+        this._application.get('/usuarios/:nickname', verifyJWT, dependencies(this), (req, resp) => {
+            this._userBusiness.listarPorNickName(req.body.nickname)
                 .then(data => {
                     resp.status(data.status).json(data);
                 })
@@ -58,8 +58,8 @@ var UsuarioRoutes = class UsuarioRoutes {
                 });
         })
 
-        this._application.post('/usuario/', criarUsuarioRules(), validate, (req, resp) => {
-            dependencies(this, req.dependencies).cadastrar(new Usuario(req.body))
+        this._application.post('/usuario/', criarUsuarioRules(), validate, dependencies(this), (req, resp) => {
+            this._userBusiness.cadastrar(new Usuario(req.body))
                 .then(data => {
                     resp.status(data.status).json(data);
                 })
@@ -68,8 +68,8 @@ var UsuarioRoutes = class UsuarioRoutes {
                 });
         })
 
-        this._application.put('/usuario/', alterarUsuarioRules(), validate, verifyJWT, (req, resp) => {
-            dependencies(this, req.dependencies).alterar(new Usuario(req.body))
+        this._application.put('/usuario/', alterarUsuarioRules(), validate, verifyJWT, dependencies(this), (req, resp) => {
+            this._userBusiness.alterar(new Usuario(req.body))
                 .then(data => {
                     resp.status(data.status).json(data);
                 })
@@ -78,8 +78,8 @@ var UsuarioRoutes = class UsuarioRoutes {
                 });
         })
 
-        this._application.delete('/usuario', deletarUsuarioRules(), validate, verifyJWT, (req, resp) => {
-            dependencies(this, req.dependencies).deletar(req.body.usuarioId)
+        this._application.delete('/usuario', deletarUsuarioRules(), validate, verifyJWT, dependencies(this), (req, resp) => {
+            this._userBusiness.deletar(req.body.usuarioId)
                 .then(data => {
                     resp.status(data.status).json(data);
                 })

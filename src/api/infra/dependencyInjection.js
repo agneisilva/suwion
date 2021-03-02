@@ -1,32 +1,36 @@
 const reqAccessKey = "$$";
 const isClass = fn => /^\s*class/.test(fn.toString());
 
-var leDependecie;
-
 var ResolveDependencyInjection = (allMaps) => {
+
+    var leDependecie;
+
     return (req, res, next) => {
         if (!leDependecie) {
             leDependecie = {};
             let keys = Object.keys(allMaps);
-            for(let key in keys){
+            for (let key in keys) {
                 leDependecie[keys[key]] = dependenciesResolve(allMaps[keys[key]], req);
             }
         }
-        
+
         req.dependencies = leDependecie;
 
         next();
     };
 }
 
-const LoadDependencies = (context, dependencies)=>{
+const LoadDependencies = (context) => {
 
-    let keys = Object.keys(dependencies[context.constructor.name]);
-    for (let dependency in keys) {
-        context[keys[dependency]] = dependencies[context.constructor.name][keys[dependency]];
-    }
+    return (req, res, next) => {
+        let keys = Object.keys(req.dependencies[context.constructor.name]);
+        for (let dependency in keys) {
+            context[keys[dependency]] = req.dependencies[context.constructor.name][keys[dependency]];
+        }
+        delete req.dependencies;
 
-    return context;
+        next();
+    };
 }
 
 const dependenciesResolve = (dependencyMap, req) => {
@@ -36,7 +40,7 @@ const dependenciesResolve = (dependencyMap, req) => {
             //Verifica se a dependencia precisa ser instanciada (class)
             if (!!dependencyMap[dependency].class && isClass(dependencyMap[dependency].class)) {
                 let args;
-                if(dependencyMap[dependency].dependencies.length > 0) args = dependenciesResolve(dependencyMap[dependency].dependencies, req);
+                if (dependencyMap[dependency].dependencies.length > 0) args = dependenciesResolve(dependencyMap[dependency].dependencies, req);
                 // //chamar recursivo para resolver as dependencias da dependencia
                 // for (let innerDependence in dependencyMap[dependency].dependencies) {
 
@@ -122,7 +126,7 @@ const DependencyBuilder = class DependencyBuilder {
 
         if (nodes.length <= 1) return this;
 
-        for (let index = nodes.length-1; index > 0; index--) {
+        for (let index = nodes.length - 1; index > 0; index--) {
             this.map[nodes[index - 1]].addDependency(nodes[index]);
         }
 
