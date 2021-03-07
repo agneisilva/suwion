@@ -1,99 +1,77 @@
-const IngredienteDAO = require('../dao/ingredienteDAO.js').IngredienteDAO;
-const { CreateResponse, FormatType: Formato } = require('../infra/createResponse.js');
-
 
 var IngredienteBusiness = class IngredienteBusiness {
-    constructor(require) {
-        this._require = require;
+    constructor({ dao }) {
+        this._dao = dao;
     }
 
-    listar(filtro, format) {
+    listar(filtro) {
         return new Promise((res, rej) => {
-            new IngredienteDAO(this._require.db).listar(filtro)
+            this._dao.listar(filtro)
                 .then((data) => {
-                    
-                    res(new CreateResponse().Success(data, format));
+                    res(data);
                 })
                 .catch((err) => {
-                    
-                    rej(new CreateResponse().Erro("Erro ao Listar Ingredientes!"));
+                    rej("Erro ao Listar Ingredientes!");
                 });
         });
     }
 
-    buscarPorId(ingredienteId, format) {
+    buscarPorId(ingredienteId) {
         return new Promise((res, rej) => {
-            new IngredienteDAO(this._require.db).buscarPorId(ingredienteId)
+            this._dao.buscarPorId(ingredienteId)
                 .then((data) => {
-                    
-                    res(new CreateResponse().Success(data, format));
+                    res(data);
                 })
                 .catch((err) => {
-                    
-                    rej(new CreateResponse().Erro("Erro ao Buscar Ingredientes!"));
+                    rej("Erro ao Buscar Ingredientes!");
                 });
         });
     }
 
-    buscar(descricao, format) {
+    buscar(descricao) {
         return new Promise((res, rej) => {
-            new IngredienteDAO(this._require.db).buscar(descricao)
+            this._dao.buscar(descricao)
                 .then((data) => {
-
-                    res(new CreateResponse().Success(data, format));
+                    res(data);
                 })
                 .catch((err) => {
-
-                    rej(new CreateResponse().Erro("Erro ao Buscar Ingredientes!"));
+                    rej("Erro ao Buscar Ingredientes!");
                 });
         });
     }
 
     cadastrar(ingrediente) {
         return new Promise((res, rej) => {
-            
-            new IngredienteDAO(this._require.db).cadastrar(ingrediente)
+            this._dao.cadastrar(ingrediente)
                 .then((data) => {
-                    
-                    res(new CreateResponse().Success(data));
+                    res(data);
                 })
                 .catch((err) => {
-                    
-                    rej(new CreateResponse().Erro("Erro ao Cadastrar Ingrediente!"));
+                    rej("Erro ao Cadastrar Ingrediente!");
                 });
         });
     }
 
     alterar(ingrediente) {
         return new Promise((res, rej) => {
-
-            //var ingredienteExistente = await this.buscarPorId(ingrediente._id, Formato.RAW);
-
-           // if(!ingredienteExistente)
-                // return rej(new CreateResponse().Erro("Ingrediente já existe!"));
-
-            new IngredienteDAO(this._require.db).alterar(ingrediente)
+            this._dao.alterar(ingrediente)
                 .then((data) => {
-                    
-                    res(new CreateResponse().Success("Sucesso ao Alterar Ingrediente!"));
+                    res("Sucesso ao Alterar Ingrediente!");
                 })
                 .catch((err) => {
-                    
-                    rej(new CreateResponse().Erro("Erro ao Alterar Ingrediente!"));
+                    rej("Erro ao Alterar Ingrediente!");
                 });
         });
     }
 
     deletar(ingredienteId) {
         return new Promise((res, rej) => {
-            new IngredienteDAO(this._require.db).deletar(ingredienteId)
+            this._dao.deletar(ingredienteId)
                 .then((data) => {
-                    
-                    res(new CreateResponse().Success("Sucesso ao Deletar Ingrediente!"));
+                    res("Sucesso ao Deletar Ingrediente!");
                 })
                 .catch((err) => {
-                    
-                    rej(new CreateResponse().Erro("Erro ao Deletar Ingrediente!"));
+                    rej("Erro ao Deletar Ingrediente!");
                 });
         });
     }

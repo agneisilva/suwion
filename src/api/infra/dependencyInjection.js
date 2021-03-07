@@ -1,20 +1,20 @@
 const reqAccessKey = "$$";
 const isClass = fn => /^\s*class/.test(fn.toString());
 
-var ResolveDependencyInjection = (allMaps) => {
+var LoadMaps = (allMaps) => {
 
     var leDependecie;
 
     return (req, res, next) => {
-        if (!leDependecie) {
-            leDependecie = {};
-            let keys = Object.keys(allMaps);
-            for (let key in keys) {
-                leDependecie[keys[key]] = dependenciesResolve(allMaps[keys[key]], req);
-            }
-        }
+        // if (!leDependecie) {
+        //     leDependecie = {};
+        //     let keys = Object.keys(allMaps);
+        //     for (let key in keys) {
+        //         leDependecie[keys[key]] = dependenciesResolve(allMaps[keys[key]], req);
+        //     }
+        // }
 
-        req.dependencies = leDependecie;
+        req.__maps__ = allMaps;
 
         next();
     };
@@ -23,11 +23,12 @@ var ResolveDependencyInjection = (allMaps) => {
 const LoadDependencies = (context) => {
 
     return (req, res, next) => {
-        let keys = Object.keys(req.dependencies[context.constructor.name]);
+        let dep = dependenciesResolve(req.__maps__[context.constructor.name], req);
+        let keys = Object.keys(dep);
         for (let dependency in keys) {
-            context[keys[dependency]] = req.dependencies[context.constructor.name][keys[dependency]];
+            context[keys[dependency]] = dep[keys[dependency]];
         }
-        delete req.dependencies;
+        delete req.__maps__;
 
         next();
     };
@@ -136,5 +137,5 @@ const DependencyBuilder = class DependencyBuilder {
 
 exports.DependenceStructure = DependenceStructure;
 exports.DependencyBuilder = DependencyBuilder;
-exports.ResolveDependencyInjection = ResolveDependencyInjection;
+exports.LoadMaps = LoadMaps;
 exports.LoadDependencies = LoadDependencies;

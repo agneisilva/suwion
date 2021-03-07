@@ -3,7 +3,7 @@ const load = require("consign");
 const cors = require("cors");
 const bodyParser = require("body-parser"); 
 const mongoMiddleware = require("../middleware/mongoMiddleware.js");
-const ResolveDependencyInjection = require('../infra/dependencyInjection').ResolveDependencyInjection;
+const LoadMaps = require('../infra/dependencyInjection').LoadMaps;
 const allDependenciesMaps = require('./dependenciesMap/dependenciesMap.js');
 
 module.exports = function () {
@@ -12,7 +12,7 @@ module.exports = function () {
     application.use(bodyParser());
     application.use(cors());
     application.use(mongoMiddleware());
-    application.use(ResolveDependencyInjection(allDependenciesMaps(application)));
+    application.use(LoadMaps(allDependenciesMaps(application)));
 
     load()
         .include("business")

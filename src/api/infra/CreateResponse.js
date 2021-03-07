@@ -41,10 +41,20 @@ var CreateResponse = class CreateResponse {
     }
 }
 
+var responseHandle = (resp, promise) => {
+    promise
+        .then(data => {
+            resp.status(200).json(new CreateResponse().Success(data));
+        })
+        .catch(err => {
+            resp.status(500).json(new CreateResponse().Erro(err));
+        });
+}
 
 const FormatType = {
     RAW: 0,
 };
 
 exports.CreateResponse = CreateResponse;
+exports.responseHandle = responseHandle;
 exports.FormatType = FormatType;

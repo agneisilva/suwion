@@ -1,83 +1,44 @@
 const { verifyJWT } = require('../infra/securityExtension');
-const IngredienteBusiness = require('../business/ingredienteBusiness.js').IngredienteBusiness;
-const { criarIngredienteRules, alterarIngredienteRules, deletarIngredienteRules, validate } = require('../business/validacoes/ingredienteValidacao');
 const Ingrediente = require('../models/ingrediente').Ingrediente;
+const dependencies = require('../infra/dependencyInjection.js').LoadDependencies;
+const { responseHandle } = require('../infra/CreateResponse.js');
+const {
+    criarIngredienteRules,
+    alterarIngredienteRules,
+    deletarIngredienteRules,
+    validate
+} = require('../business/validacoes/ingredienteValidacao');
 
 var IngredienteRoutes = class IngredienteRoutes {
-    constructor(application) {
-        this._application = application;
+    constructor(app) {
+        this._application = app;
     }
 
     registrarRotas() {
-        //#region Ingredientes
-
-        this._application.get('/ingrediente/:id', verifyJWT, (req, resp) => {
-            new IngredienteBusiness(req).buscarPorId(req.params.id)
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    resp.status(err.status).json(err);
-                });
+        this._application.get('/ingrediente/:id', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.buscarPorId(req.params.id));
         })
 
-        this._application.get('/ingredientes/:descricao', verifyJWT, (req, resp) => {
-            new IngredienteBusiness(req).buscar(req.params.descricao)
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    resp.status(err.status).json(err);
-                });
+        this._application.get('/ingredientes/:descricao', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.buscar(req.params.descricao));
         })
 
-        this._application.get('/ingredientes', verifyJWT, (req, resp) => {
-            new IngredienteBusiness(req).listar(req.body)
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    resp.status(err.status).json(err);
-                });
+        this._application.get('/ingredientes', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.listar(req.body));
         })
 
-        this._application.post('/ingrediente', criarIngredienteRules(), validate, verifyJWT, (req, resp) => {
-            new IngredienteBusiness(req).cadastrar(new Ingrediente(req.body))
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    console.log(err.message);
-                    //resp.status(err.status).json(err);
-                });
-
+        this._application.post('/ingrediente', criarIngredienteRules(), validate, verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.cadastrar(new Ingrediente(req.body)));
         })
 
-        this._application.put('/ingrediente', alterarIngredienteRules(), validate, verifyJWT, (req, resp) => {
-            new IngredienteBusiness(req).alterar(new Ingrediente(req.body))
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    resp.status(err.status).json(err);
-                });
+        this._application.put('/ingrediente', alterarIngredienteRules(), validate, verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.alterar(new Ingrediente(req.body)));
         })
 
-        this._application.delete('/ingrediente', deletarIngredienteRules(), validate, verifyJWT, (req, resp) => {
-            new IngredienteBusiness(req).deletar(req.body.ingredienteId)
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    resp.status(err.status).json(err);
-                });
+        this._application.delete('/ingrediente', deletarIngredienteRules(), validate, verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.deletar(req.body.ingredienteId));
         })
-
-        //#endregion Ingredientes
-        return this;
     }
-
 }
-
 
 exports.IngredienteRoutes = IngredienteRoutes;

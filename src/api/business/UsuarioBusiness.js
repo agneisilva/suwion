@@ -1,144 +1,141 @@
-//const UsuarioDAO = require('../dao/usuarioDAO.js').UsuarioDAO;
-const { FormatType: Formato } = require('../infra/createResponse.js');
 const { genRandomString, sha512 } = require('../infra/securityExtension');
 const jwt = require('jsonwebtoken');
 
 var UsuarioBusiness = class UsuarioBusiness {
-    constructor({userDao, createResponse}) {
+    constructor({userDao}) {
         this._userDao = userDao;
-        this._createResponse = createResponse;
     }
 
-    buscarPorId(usuarioId, format) {
+    buscarPorId(usuarioId) {
         return new Promise((res, rej) => {
             this._userDao.buscarPorId(usuarioId)
                 .then((data) => {
                     //Success
-                    res(this._createResponse.Success(data, format));
+                    res(data);
                 })
                 .catch((err) => {
                     //Error
-                    rej(this._createResponse.Erro("Erro ao Buscar Usuario!"));
+                    rej("Erro ao Buscar Usuario!");
                 });
         });
     }
 
-    buscarPorEmail(email, format) {
+    buscarPorEmail(email) {
         return new Promise((res, rej) => {
-            new UsuarioDAO(this._require.db).buscarPorEmail(email)
+            this._userDao.buscarPorEmail(email)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success(data, format));
+                    res(data);
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Buscar Usuário!"));
+                    rej("Erro ao Buscar Usuário!");
                 });
         });
     }
 
-    buscarPorNickName(nickName, format) {
+    buscarPorNickName(nickName) {
         return new Promise((res, rej) => {
-            new UsuarioDAO(this._require.db).buscarPorNickName(nickName)
+            this._userDao.buscarPorNickName(nickName)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success(data, format));
+                    res(data);
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Buscar Usuario!"));
+                    rej("Erro ao Buscar Usuario!");
                 });
         });
     }
 
-    listarPorNickName(nickName, format) {
+    listarPorNickName(nickName) {
         return new Promise((res, rej) => {
-            new UsuarioDAO(this._require.db).listarPorNickName(nickName)
+            this._userDao.listarPorNickName(nickName)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success(data, format));
+                    res(data);
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Buscar Usuarios!"));
+                    rej("Erro ao Buscar Usuarios!");
                 });
         });
     }
 
-    cadastrar(usuario, format) {
+    cadastrar(usuario) {
 
         return new Promise(async (res, rej) => {
 
             const result = await Promise.all(
                             [
-                                this.buscarPorNickName(usuario.nickName, Formato.RAW), 
-                                this.buscarPorEmail(usuario.email, Formato.RAW)
+                                this.buscarPorNickName(usuario.nickName), 
+                                this.buscarPorEmail(usuario.email)
                             ])
 
             if (result[0] || result[1])
-                return rej(new CreateResponse().Erro("Usuário já cadastrado"));
+                return rej("Usuário já cadastrado");
 
             usuario.salt = genRandomString(10);
             usuario.senha = sha512(usuario.senha, usuario.salt);
 
-            new UsuarioDAO(this._require.db).cadastrar(usuario)
+            this._userDao.cadastrar(usuario)
                 .then((data) => {
-                    res(new CreateResponse().Success({ Id: data._id, NickName: data.nickName }, format));
+                    res({ Id: data._id, NickName: data.nickName });
                 })
                 .catch((err) => {
-                    rej(new CreateResponse().Erro("Erro ao Cadastrar Usuário!"));
+                    rej("Erro ao Cadastrar Usuário!");
                 });
         });
     }
 
-    alterar(usuario, format) {
+    alterar(usuario) {
         return new Promise(async (res, rej) => {
 
-            const usuarioExistente = await this.buscarPorId(usuario._id, Formato.RAW);
+            const usuarioExistente = await this.buscarPorId(usuario._id);
 
             if (!usuarioExistente)
-                return rej(new CreateResponse().Erro("Usuário não encontrado!"));
+                return rej("Usuário não encontrado!");
 
             usuario.salt = genRandomString(10);
             usuario.senha = sha512(usuario.senha, usuario.salt);
             usuario.nickName = usuarioExistente.nickName;
 
-            new UsuarioDAO(this._require.db).alterar(usuario)
+            this._userDao.alterar(usuario)
                 .then((data) => {
-                    res(new CreateResponse().Success("Sucesso ao Alterar Usuário!", format));
+                    res("Sucesso ao Alterar Usuário!");
                 })
                 .catch((err) => {
-                    rej(new CreateResponse().Erro("Erro ao Alterar Usuário!"));
+                    rej("Erro ao Alterar Usuário!");
                 });
         });
     }
 
-    deletar(usuarioId, format) {
+    deletar(usuarioId) {
         return new Promise(async (res, rej) => {
 
-            var usuarioExistente = await this.buscarPorId(usuarioId, Formato.RAW);
+            var usuarioExistente = await this.buscarPorId(usuarioId);
 
             if (!usuarioExistente)
-                return rej(new CreateResponse().Erro("Usuário não encontrado!"));
+                return rej("Usuário não encontrado!");
 
-            new UsuarioDAO(this._require.db).deletar(usuarioId)
+            this._userDao.deletar(usuarioId)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success("Sucesso ao Deletar Usuário!", format));
+                    res("Sucesso ao Deletar Usuário!");
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Deletar Usuário!"));
+                    rej("Erro ao Deletar Usuário!");
                 });
         });
     }
 
     autenticar({ login, senha }) {
         return new Promise((res, rej) => {
-            this.buscarPorNickName(login, Formato.RAW)
+            this.buscarPorNickName(login)
                 .then(usuario => {
 
-                    if (!usuario) return res(new CreateResponse().AuthErro());
+                    //if (!usuario) return res(new CreateResponse().AuthErro());
 
                     var hashreq = sha512(senha, usuario.salt);
 
@@ -148,10 +145,12 @@ var UsuarioBusiness = class UsuarioBusiness {
                             process.env.SECRET,
                             { expiresIn: process.env.SUWION_JWT_EXPIRESIN || '86400s' /*24horas*/ });
 
-                        res(new CreateResponse().AuthSucsess(token));
+                        //res(new CreateResponse().AuthSucsess(token));
+                        res(token);
                     }
                     else {
-                        res(new CreateResponse().AuthErro());
+                        //res(new CreateResponse().AuthErro());
+                        res();
                     }
                 });
         });
