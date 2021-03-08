@@ -155,42 +155,216 @@ describe("Cadastro de Usuário", () => {
 });
 
 //TESTES DE BUSCA DE USUARIO
-describe("Busca de Usuário", ()=>{
+describe("Busca de Usuário", () => {
 
-  it("Buscar Usuario por ID com erro ao acessar o banco de dados", ()=>{
-    assert.fail("Test not implemented!");
+  it("Buscar Usuario por ID com erro ao acessar o banco de dados", () => {
+    //Preparando dados
+    var usuarioId = 1;
+
+    //Preparando MOCKS
+    var dependencies = { userDao: {} };
+
+    dependencies.userDao.buscarPorId = (email) => {
+      return new Promise((res, rej) => {
+        rej("Erro ao acessar o banco de dados"); //Simular erro para acessar o banco de dados
+      });
+    };
+
+    //Iniciando o teste instanciando o objeto a ser testado
+    business = new UsuarioBusiness(dependencies);
+
+    //Testando assunto
+    business.buscarPorId(usuarioId).catch((err) => {
+      assert(err, "Erro ao Buscar Usuário!");
+    });
+
   });
-  
-  it("Buscar Usuario por ID com sucesso", ()=>{
-    assert.fail("Test not implemented!");
+
+  it("Buscar Usuario por ID com sucesso", () => {
+        
+        //Preparando dados
+        var usuarioId = 213123123123123123;
+
+        var usuario = new Usuario({
+          id: usuarioId,
+          nome: "Carlos dos Santos",
+          email: "carlinhos.santos@teste.com",
+          nickName: "casan",
+        });
+
+        //Preparando MOCKS
+        var dependencies = { userDao: {} };
+    
+        dependencies.userDao.buscarPorId = (usuarioId) => {
+          return new Promise((res, rej) => {
+            res(usuario); //Simular retorno do usuário
+          });
+        };
+    
+        //Iniciando o teste instanciando o objeto a ser testado
+        business = new UsuarioBusiness(dependencies);
+    
+        //Testando assunto
+        business.buscarPorId(usuarioId).then((res) => {
+          assert(res, usuario);
+        });
   });
-  
-  it("Buscar Usuario por Email com erro ao acessar o banco de dados", ()=>{
-    assert.fail("Test not implemented!");
+
+  it("Buscar Usuario por Email com erro ao acessar o banco de dados", () => {
+    //Preparando dados
+    var emailUsuario = "agnei.silva@suwion.com";
+
+    //Preparando MOCKS
+    var dependencies = { userDao: {} };
+
+    dependencies.userDao.buscarPorEmail = (email) => {
+      return new Promise((res, rej) => {
+        rej("Erro ao acessar o banco de dados"); //Simular erro para acessar o banco de dados
+      });
+    };
+
+    //Iniciando o teste instanciando o objeto a ser testado
+    business = new UsuarioBusiness(dependencies);
+
+    //Testando assunto
+    business.buscarPorEmail(emailUsuario).catch((err) => {
+      assert(err, "Erro ao Buscar Usuário!");
+    });
   });
-  
-  it("Buscar Usuario por Email com sucesso", ()=>{
-    assert.fail("Test not implemented!");
+
+  it("Buscar Usuario por Email com sucesso", () => {
+    //Preparando dados
+    var emailUsuario =  "carlinhos.santos@teste.com";
+
+    var usuario = new Usuario({
+      id: 123123123123,
+      nome: "Carlos dos Santos",
+      email: emailUsuario,
+      nickName: "casan",
+    });
+
+    //Preparando MOCKS
+    var dependencies = { userDao: {} };
+
+    dependencies.userDao.buscarPorEmail = (emailUsuario) => {
+      return new Promise((res, rej) => {
+        res(usuario); //Simular retorno do usuário
+      });
+    };
+
+    //Iniciando o teste instanciando o objeto a ser testado
+    business = new UsuarioBusiness(dependencies);
+
+    //Testando assunto
+    business.buscarPorEmail(emailUsuario).then((res) => {
+      assert(res, usuario);
+    });
   });
-  
-  it("Buscar Usuario por NickName com erro ao acessar o banco de dados", ()=>{
-    assert.fail("Test not implemented!");
+
+  it("Buscar Usuario por NickName com erro ao acessar o banco de dados", () => {
+    //Preparando dados
+    var nickName =  "casan";
+
+    //Preparando MOCKS
+    var dependencies = { userDao: {} };
+
+    dependencies.userDao.buscarPorNickName = (nickName) => {
+      return new Promise((res, rej) => {
+        rej("Erro ao acessar o banco de dados"); //Simular erro para acessar o banco de dados
+      });
+    };
+
+    //Iniciando o teste instanciando o objeto a ser testado
+    business = new UsuarioBusiness(dependencies);
+
+    //Testando assunto
+    business.buscarPorNickName(nickName).catch((err) => {
+      assert(err, "Erro ao Buscar Usuário!");
+    });
   });
-  
-  it("Buscar Usuario por NickName com sucesso", ()=>{
-    assert.fail("Test not implemented!");
+
+  it("Buscar Usuario por NickName com sucesso", () => {
+    //Preparando dados
+    var nickName =  "casan";
+
+    var usuario = new Usuario({
+      id: 123123123123,
+      nome: "Carlos dos Santos",
+      email: "carlinhos.santos@teste.com",
+      nickName: nickName,
+    });
+
+    //Preparando MOCKS
+    var dependencies = { userDao: {} };
+
+    dependencies.userDao.buscarPorNickName = (nickName) => {
+      return new Promise((res, rej) => {
+        res(usuario); //Simular retorno do usuário
+      });
+    };
+
+    //Iniciando o teste instanciando o objeto a ser testado
+    business = new UsuarioBusiness(dependencies);
+
+    //Testando assunto
+    business.buscarPorNickName(nickName).then((res) => {
+      assert(res, usuario);
+    });
   });
 });
 
 //TESTES DE LISTAGEM DE USUARIOS
-describe("Listagem de Usuários", ()=>{
-  
-  it("Listar Usuarios por NickName com erro ao acessar o banco de dados", ()=>{
-    assert.fail("Test not implemented!");
+describe("Listagem de Usuários", () => {
+
+  it("Listar Usuarios por NickName com erro ao acessar o banco de dados", () => {
+    //Preparando dados
+    var nikename =  "casan";
+
+    //Preparando MOCKS
+    var dependencies = { userDao: {} };
+
+    dependencies.userDao.listarPorNickName = (nikename) => {
+      return new Promise((res, rej) => {
+        rej("Erro ao Buscar Usuário!"); 
+      });
+    };
+
+    //Iniciando o teste instanciando o objeto a ser testado
+    business = new UsuarioBusiness(dependencies);
+
+    //Testando assunto
+    business.listarPorNickName(nikename).catch((err) => {
+      assert(err, "Erro ao Buscar Usuário!");
+    });
   });
-  
-  it("Listar Usuarios por NickName com sucesso", ()=>{
-    assert.fail("Test not implemented!");
+
+  it("Listar Usuarios por NickName com sucesso", () => {
+    //Preparando dados
+    var nikename =  "casan";
+
+    var usuario = new Usuario({
+      id: 123123123123,
+      nome: "Carlos dos Santos",
+      email: "agnei.silva@suwion.com",
+      nickName: nikename,
+    });
+
+    //Preparando MOCKS
+    var dependencies = { userDao: {} };
+
+    dependencies.userDao.listarPorNickName = (nikename) => {
+      return new Promise((res, rej) => {
+        res(usuario); 
+      });
+    };
+
+    //Iniciando o teste instanciando o objeto a ser testado
+    business = new UsuarioBusiness(dependencies);
+
+    //Testando assunto
+    business.listarPorNickName(nikename).then((res) => {
+      assert(res, usuario);
+    });
   });
 });
 

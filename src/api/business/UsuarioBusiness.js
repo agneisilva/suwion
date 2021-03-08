@@ -15,7 +15,7 @@ var UsuarioBusiness = class UsuarioBusiness {
                 })
                 .catch((err) => {
                     //Error
-                    rej("Erro ao Buscar Usuario!");
+                    rej("Erro ao Buscar Usuário!");
                 });
         });
     }
@@ -43,7 +43,7 @@ var UsuarioBusiness = class UsuarioBusiness {
                 })
                 .catch((err) => {
                     //Error
-                    rej("Erro ao Buscar Usuario!");
+                    rej("Erro ao Buscar Usuário!");
                 });
         });
     }
