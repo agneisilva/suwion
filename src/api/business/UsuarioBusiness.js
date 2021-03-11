@@ -2,7 +2,7 @@ const { genRandomString, sha512 } = require('../infra/securityExtension');
 const jwt = require('jsonwebtoken');
 
 var UsuarioBusiness = class UsuarioBusiness {
-    constructor({userDao}) {
+    constructor({ userDao }) {
         this._userDao = userDao;
     }
 
@@ -65,94 +65,107 @@ var UsuarioBusiness = class UsuarioBusiness {
     cadastrar(usuario) {
 
         return new Promise(async (res, rej) => {
+            try {
+                const result = await Promise.all(
+                    [
+                        this.buscarPorNickName(usuario.nickName),
+                        this.buscarPorEmail(usuario.email)
+                    ])
 
-            const result = await Promise.all(
-                            [
-                                this.buscarPorNickName(usuario.nickName), 
-                                this.buscarPorEmail(usuario.email)
-                            ])
+                if (result[0] || result[1])
+                    return rej("Usuário já cadastrado");
 
-            if (result[0] || result[1])
-                return rej("Usuário já cadastrado");
+                usuario.salt = genRandomString(10);
+                usuario.senha = sha512(usuario.senha, usuario.salt);
 
-            usuario.salt = genRandomString(10);
-            usuario.senha = sha512(usuario.senha, usuario.salt);
-
-            this._userDao.cadastrar(usuario)
-                .then((data) => {
-                    res({ Id: data._id, NickName: data.nickName });
-                })
-                .catch((err) => {
-                    rej("Erro ao Cadastrar Usuário!");
-                });
+                this._userDao.cadastrar(usuario)
+                    .then((data) => {
+                        res({ Id: data._id, NickName: data.nickName });
+                    })
+                    .catch((err) => {
+                        rej("Erro ao Cadastrar Usuário!");
+                    });
+            } catch (error) {
+                rej(error);
+            }
         });
     }
 
     alterar(usuario) {
         return new Promise(async (res, rej) => {
+            try {
+                const usuarioExistente = await this.buscarPorId(usuario._id);
 
-            const usuarioExistente = await this.buscarPorId(usuario._id);
+                if (!usuarioExistente)
+                    return rej("Usuário não encontrado!");
 
-            if (!usuarioExistente)
-                return rej("Usuário não encontrado!");
+                usuario.salt = genRandomString(10);
+                usuario.senha = sha512(usuario.senha, usuario.salt);
+                usuario.nickName = usuarioExistente.nickName;
 
-            usuario.salt = genRandomString(10);
-            usuario.senha = sha512(usuario.senha, usuario.salt);
-            usuario.nickName = usuarioExistente.nickName;
-
-            this._userDao.alterar(usuario)
-                .then((data) => {
-                    res("Sucesso ao Alterar Usuário!");
-                })
-                .catch((err) => {
-                    rej("Erro ao Alterar Usuário!");
-                });
+                this._userDao.alterar(usuario)
+                    .then((data) => {
+                        res("Sucesso ao Alterar Usuário!");
+                    })
+                    .catch((err) => {
+                        rej("Erro ao Alterar Usuário!");
+                    });
+            } catch (error) {
+                rej(error);
+            }
         });
     }
 
     deletar(usuarioId) {
         return new Promise(async (res, rej) => {
+            try {
+                var usuarioExistente = await this.buscarPorId(usuarioId);
 
-            var usuarioExistente = await this.buscarPorId(usuarioId);
+                if (!usuarioExistente)
+                    return rej("Usuário não encontrado!");
 
-            if (!usuarioExistente)
-                return rej("Usuário não encontrado!");
-
-            this._userDao.deletar(usuarioId)
-                .then((data) => {
-                    //Success
-                    res("Sucesso ao Deletar Usuário!");
-                })
-                .catch((err) => {
-                    //Error
-                    rej("Erro ao Deletar Usuário!");
-                });
+                this._userDao.deletar(usuarioId)
+                    .then((data) => {
+                        res("Sucesso ao Deletar Usuário!");
+                    })
+                    .catch((err) => {
+                        rej("Erro ao Deletar Usuário!");
+                    });
+            } catch (error) {
+                rej(error);
+            }
         });
     }
 
-    autenticar({ login, senha }) {
-        return new Promise((res, rej) => {
-            this.buscarPorNickName(login)
-                .then(usuario => {
+    autenticar(login, senha) {
+        return new Promise(async (res, rej) => {
 
-                    //if (!usuario) return res(new CreateResponse().AuthErro());
+            try {
+                var usuario = await this.buscarPorNickName(login);
 
-                    var hashreq = sha512(senha, usuario.salt);
+                if (!usuario)
+                    return rej("Usuário não encontrado");
 
-                    if (usuario.senha === hashreq) {
-                        const token = jwt.sign(
-                            { usuarioId: usuario._id },
-                            process.env.SECRET,
-                            { expiresIn: process.env.SUWION_JWT_EXPIRESIN || '86400s' /*24horas*/ });
+                var hashreq = sha512(senha, usuario.salt);
 
-                        //res(new CreateResponse().AuthSucsess(token));
-                        res(token);
-                    }
-                    else {
-                        //res(new CreateResponse().AuthErro());
-                        res();
-                    }
-                });
+                if (usuario.senha === hashreq) {
+                    const token = jwt.sign(
+                        { usuarioId: usuario._id },
+                        process.env.SECRET,
+                        { expiresIn: process.env.SUWION_JWT_EXPIRESIN || '86400s' /*24horas*/ });
+
+                    //res(new CreateResponse().AuthSucsess(token));
+                    res(token);
+                }
+                else {
+                    //res(new CreateResponse().AuthErro());
+                    res();
+                }
+
+
+            } catch (error) {
+                rej()
+            }
         });
     }
 }
