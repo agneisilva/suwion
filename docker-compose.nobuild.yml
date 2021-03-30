@@ -3,12 +3,9 @@ version: '3.4'
 services:
 
     webapi:
-        image: ${DOCKER_REGISTRY:-agneisilva}/suwion.webapi:${PLATFORM:-linux}-${TAG:-latest}
+        image: agneisilva/suwion.webapi:linux-latest
         container_name: suwion.webapi
         restart: always
-        build:
-          context: ./src/api/
-          dockerfile: Dockerfile
         environment: 
             SUWION_MONGO_CONN_STR: mongodb://root:Mongo123!@localhost:27017/?authSource=admin
         depends_on:
