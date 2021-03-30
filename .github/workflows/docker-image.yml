@@ -40,6 +40,16 @@ jobs:
         run: |
             docker-compose -f docker-compose.yml build
             docker-compose -f docker-compose.yml push
+      -
+        name: copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          source: "docker-compose.nobuild.yml"
+          target: "/home/admin/suwion"
       - 
         name: SSH-HOST Pull and and Up container
         uses: appleboy/ssh-action@master
