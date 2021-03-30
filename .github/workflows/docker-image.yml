@@ -21,12 +21,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - 
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_PASS }}
+      - 
+        name: multiple command
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_EC2_HOST }}
+          username: ${{ secrets.AWS_EC2_USERNAME }}
+          password: ${{ secrets.AWS_EC2_PASSWORD }}
+          port: 22
+          script: |
+                cd /home/admin/suwion
+                sudo docker-compose -f docker-compose.yml pull
+                sudo docker-compose -f docker-compose.yml up -d --no-build --force-recreate --remove-orphans
 
-      - run: echo $DOCKER_HUB_PASS | docker login docker.io -u $DOCKER_HUB_USER --password-stdin
-      - run: |
-          echo pwd
-          echo ls
-          docker-compose build
-          docker-compose push
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
