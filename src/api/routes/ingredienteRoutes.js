@@ -1,7 +1,7 @@
 const { verifyJWT } = require('../infra/securityExtension');
 const Ingrediente = require('../models/ingrediente').Ingrediente;
 const dependencies = require('../infra/dependencyInjection.js').LoadDependencies;
-const { responseHandle } = require('../infra/CreateResponse.js');
+const { responseHandle } = require('../infra/createResponse.js');
 const {
     criarIngredienteRules,
     alterarIngredienteRules,
