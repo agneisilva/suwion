@@ -50,8 +50,8 @@ jobs:
           port: 22
           script: |
                 cd /home/admin/suwion
-                sudo docker-compose -f docker-compose.yml pull
-                sudo docker-compose -f docker-compose.yml up -d --no-build --force-recreate --remove-orphans
+                sudo docker-compose -f docker-compose.nobuild.yml pull
+                sudo docker-compose -f docker-compose.nobuild.yml up -d --no-build --force-recreate --remove-orphans
 
 
 
