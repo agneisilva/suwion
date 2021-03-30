@@ -1,0 +1,32 @@
+#checkout
+#https://github.com/metno/pycsw-container/blob/master/.github/workflows/docker.yml
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+    
+env:
+  # TODO: remember to update version on new tag
+  LATEST_TAG: 1.0.0
+  DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
+  DOCKER_HUB_PASS: ${{ secrets.DOCKER_HUB_PASS }}
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: echo $DOCKER_HUB_PASS | docker login docker.io -u $DOCKER_HUB_USER --password-stdin
+      - run: |
+          echo pwd
+          echo ls
+          docker-compose build
+          docker-compose push
+
