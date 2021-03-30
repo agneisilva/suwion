@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const uri = process.env.SUWION_MONGO_CONN_STR || "mongodb://root:MongoDB2019!@localhost:27017/?authSource=admin";
+const uri = process.env.SUWION_MONGO_CONN_STR || "mongodb://root:Mongo123!!@localhost:27017/?authSource=admin";
 
 
 module.exports = () => {
@@ -8,12 +8,8 @@ module.exports = () => {
 
     return (req, res, next) => {
         if (!connection)
-            connection = MongoClient.connect(uri, {
-                sslValidate: true,
-                sslCA: ca
-            });
+            connection = MongoClient.connect(uri);
 
-        //connection = MongoClient.connect(uri);
         
         connection
             .then(client => {
@@ -22,6 +18,7 @@ module.exports = () => {
                 next();
             })
             .catch(err => {
+                console.log('Error to connect on MongoDB. ', err);
                 connection = undefined;
                 next(err);
             });
