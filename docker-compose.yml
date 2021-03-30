@@ -10,7 +10,7 @@ services:
           context: ./src/api/
           dockerfile: Dockerfile
         environment: 
-            SUWION_MONGO_CONN_STR: mongodb://root:Mongo123!@localhost:27017/?authSource=admin
+            SUWION_MONGO_CONN_STR: mongodb://root:Mongo123!@mongo:27017/?authSource=admin
         depends_on:
          - mongo
         networks:

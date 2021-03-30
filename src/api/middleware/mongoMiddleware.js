@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const uri = process.env.SUWION_MONGO_CONN_STR || "mongodb://root:Mongo123!!@localhost:27017/?authSource=admin";
+const uri = process.env.SUWION_MONGO_CONN_STR || "mongodb://root:Mongo123!!@mongo:27017/?authSource=admin";
 
 
 module.exports = () => {
