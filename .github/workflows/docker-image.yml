@@ -25,6 +25,8 @@ jobs:
 
       - run: echo $DOCKER_HUB_PASS | docker login docker.io -u $DOCKER_HUB_USER --password-stdin
       - run: |
+          echo pwd
+          echo ls
           docker-compose build
           docker-compose push
 
