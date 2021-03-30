@@ -15,4 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker Compose image
-      run: docker-compose build --no-cache
+      run: docker-compose -f docker-compose.yml build --no-cache
+    - name: Build the Docker Compose image
+      run: docker-compose -f docker-compose.yml push
