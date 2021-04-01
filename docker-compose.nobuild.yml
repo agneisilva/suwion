@@ -80,6 +80,9 @@ services:
             - ./statping:/app
         environment:
             DB_CONN: sqlite
+            ADMIN_USER: suwionadmin
+            ADMIN_PASSWORD: Suwion@123
+            REMOVE_AFTER: 168h #Automatically delete records after time
 
     
         
