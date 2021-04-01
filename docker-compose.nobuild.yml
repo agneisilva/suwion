@@ -5,9 +5,6 @@ services:
     proxy:
         image: agneisilva/suwion.reverse_proxy:linux-latest
         container_name: suwion.reverse_proxy
-        build: 
-            context: ./src/reverseproxy
-            dockerfile: Dockerfile
         environment: 
             HOST_SUWION_API: hml.api.suwion.com.br
             HOST_SUWION_PORTAL: hml.suwion.com.br
