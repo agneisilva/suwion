@@ -2,6 +2,21 @@ version: '3.4'
 
 services:
 
+    proxy:
+        image: ${DOCKER_REGISTRY:-agneisilva}/suwion.reverseproxy:${PLATFORM:-linux}-${TAG:-latest}
+        container_name: suwion.reverse_proxy
+        build: 
+            context: ./src/reverseproxy
+            dockerfile: Dockerfile
+        environment: 
+            HOST_SUWION_API: local.api.suwion.com.br
+            HOST_SUWION_PORTAL: local.suwion.com.br
+        networks:
+            - bridge-network
+        ports:
+            - 80:80
+            - 443:443
+
     portal:
         image: ${DOCKER_REGISTRY:-agneisilva}/suwion.portal:${PLATFORM:-linux}-${TAG:-latest}
         container_name: suwion.portal
@@ -64,6 +79,7 @@ services:
 
     portainer:
         image: portainer/portainer
+        container_name: portainer
         command: -H unix:///var/run/docker.sock
         restart: always
         volumes:
