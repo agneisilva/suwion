@@ -1,40 +1,22 @@
 const { verifyJWT } = require('../infra/securityExtension');
-const CardapioBusiness = require('../business/cardapioBusiness.js').CardapioBusiness;
+const dependencies = require('../infra/dependencyInjection.js').LoadDependencies;
+const { responseHandle } = require('../infra/createResponse.js');
 
 
 var CardapioRoutes = class CardapioRoutes {
-    constructor(application) {
-        this._application = application;
+    constructor(app) {
+        this._application = app;
     }
+
     registrarRotas() {
-
-        //#region Cardapios
-
-        this._application.post('/cardapio/', verifyJWT, (req, resp) => {
-            new CardapioBusiness(req).cadastrar(req.body)
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    resp.status(err.status).json(err);
-                });
+        this._application.post('/cardapio/', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.cadastrar(req.body));
         });
 
-        this._application.post('/cardapios/', verifyJWT, (req, resp) => {
-            new CardapioBusiness(req).filtrar(req.body)
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    resp.status(err.status).json(err);
-                });
+        this._application.post('/cardapios/', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.filtrar(req.body));
         });
-
-        //#endregion Cardapios
-        return this;
-
     }
-
 }
 
 exports.CardapioRoutes = CardapioRoutes;
