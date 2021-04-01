@@ -1,3 +1,5 @@
+[![Docker Image CI](https://github.com/agneisilva/suwion/actions/workflows/docker-image.yml/badge.svg)](https://github.com/agneisilva/suwion/actions/workflows/docker-image.yml)
+
 # suwion
 Gerenciador de lista de compras e muito mais...
 
