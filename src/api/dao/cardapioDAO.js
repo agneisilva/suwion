@@ -3,7 +3,7 @@ var mongo = require('mongodb');
 const Collection = "cardapio";
 
 var CardapioDAO = class CardapioDAO {
-    constructor(connection) {
+    constructor({connection}) {
         this._connection = connection;
         this.collection = this._connection.collection(Collection);
     }

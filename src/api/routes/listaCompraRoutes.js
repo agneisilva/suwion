@@ -1,6 +1,6 @@
 const { verifyJWT } = require('../infra/securityExtension');
-const ListaCompraBusiness = require('../business/listaCompraBusiness.js').ListaCompraBusiness;
-
+const dependencies = require('../infra/dependencyInjection.js').LoadDependencies;
+const { responseHandle } = require('../infra/createResponse.js');
 
 var ListaCompraRoutes = class ListaCompraRoutes {
     constructor(application) {
@@ -8,32 +8,14 @@ var ListaCompraRoutes = class ListaCompraRoutes {
     }
 
     registrarRotas() {
-        //#region Listas de Compras
-
-        this._application.post('/listaCompra/receita', verifyJWT, (req, resp) => {
-            new ListaCompraBusiness(req).criarPorReceita(req.body)
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    resp.status(err.status).json(err);
-                });
+        this._application.post('/listaCompra/receita', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.criarPorReceita(req.body));
         });
 
-        this._application.post('/listaCompra/cardapio', verifyJWT, (req, resp) => {
-            new ListaCompraBusiness(req).criarPorCardapio(req.body)
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    resp.status(err.status).json(err);
-                });
+        this._application.post('/listaCompra/cardapio', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.criarPorCardapio(req.body));
         });
-
-        //#endregion Listas de Compras
-
     }
-
 }
 
 

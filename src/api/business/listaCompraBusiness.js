@@ -1,22 +1,20 @@
-const ListaCompraDAO = require('../dao/listaCompraDAO.js').ListaCompraDAO;
-const CreateResponse = require('../infra/createResponse.js').CreateResponse;
 
 var ListaCompraBusiness = class ListaCompraBusiness {
-    constructor(require) {
-        this._require = require;
+    constructor({ dao }) {
+        this._dao = dao;
     }
 
     criarPorReceita(listaCompra){
         //TODO implementar cadastro de lista de compras baseado em uma receita e número de porções/pessoas
         return new Promise((res, rej) => {
-            new ListaCompraDAO(this._require.db).criarPorReceita(listaCompra)
+            this._dao.criarPorReceita(listaCompra)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success(data));
+                    res(data);
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Criar Lista de Compra para a Receita!"));
+                    rej("Erro ao Criar Lista de Compra para a Receita!");
                 });
         });
     }
@@ -24,14 +22,14 @@ var ListaCompraBusiness = class ListaCompraBusiness {
     criarPorCardapio(listaCompra){
         //TODO implementar cadastro de lista de compras baseado em um cardapio e número de porções/pessoas
         return new Promise((res, rej) => {
-            new ListaCompraDAO(this._require.db).criarPorCardapio(listaCompra)
+            this._dao.criarPorCardapio(listaCompra)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success(data));
+                    res(data);
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Criar Lista de Compra para o Cardápio!"));
+                    rej("Erro ao Criar Lista de Compra para o Cardápio!");
                 });
         });
     }

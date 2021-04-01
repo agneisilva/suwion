@@ -1,21 +1,19 @@
-const CardapioDAO = require('../dao/cardapioDAO.js').CardapioDAO;
-const CreateResponse = require('../infra/createResponse.js').CreateResponse;
 
 var CardapioBusiness = class CardapioBusiness {
-    constructor(require) {
-        this._require = require;
+    constructor({ dao }) {
+        this._dao = dao;
     }
 
     cadastrar(cardapio) {
         return new Promise((res, rej) => {
-            new CardapioDAO(this._require.db).cadastrar(cardapio)
+            this._dao.cadastrar(cardapio)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success(data));
+                    res(data);
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Cadastrar Cardápio!"));
+                    rej("Erro ao Cadastrar Cardápio!");
                 });
         });
     }
@@ -23,14 +21,14 @@ var CardapioBusiness = class CardapioBusiness {
     filtrar(filtros) {
         //TODO implementar filtro avançado de cardapios
         return new Promise((res, rej) => {
-            new CardapioDAO(this._require.db).filtrar(filtros)
+            this._dao.filtrar(filtros)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success(data));
+                    res(data);
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Localizar os Cardápios!"));
+                    rej("Erro ao Localizar os Cardápios!");
                 });
         });
     }

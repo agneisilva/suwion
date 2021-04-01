@@ -1,22 +1,20 @@
-const ReceitaDAO = require('../dao/receitaDAO.js').ReceitaDAO;
-const CreateResponse = require('../infra/createResponse.js').CreateResponse;
 
 var ReceitaBusiness = class ReceitaBusiness {
-    constructor(require) {
-        this._require = require;
+    constructor({ dao }) {
+        this._dao = dao;
     }
 
     buscarPorId(id) {
         //TODO
         return new Promise((res, rej) => {
-            new ReceitaDAO(this._require.db).buscarPorId(id)
+            this._dao.buscarPorId(id)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success(data));
+                    res(data);
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Buscar Receita!"));
+                    rej("Erro ao Buscar Receita!");
                 });
         });
     }
@@ -24,14 +22,14 @@ var ReceitaBusiness = class ReceitaBusiness {
     cadastrar(receita) {
         //TODO
         return new Promise((res, rej) => {
-            new ReceitaDAO(this._require.db).cadastrar(receita)
+            this._dao.cadastrar(receita)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success(data));
+                    res(data);
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Cadastrar Receita!"));
+                    rej("Erro ao Cadastrar Receita!");
                 });
         });
     }
@@ -46,14 +44,14 @@ var ReceitaBusiness = class ReceitaBusiness {
             (pensar em mais filtros)
         */
         return new Promise((res, rej) => {
-            new ReceitaDAO(this._require.db).filtrar(filtros)
+            this._dao.filtrar(filtros)
                 .then((data) => {
                     //Success
-                    res(new CreateResponse().Success(data));
+                    res(data);
                 })
                 .catch((err) => {
                     //Error
-                    rej(new CreateResponse().Erro("Erro ao Localizar Receitas!"));
+                    rej("Erro ao Localizar Receitas!");
                 });
         });
     }
