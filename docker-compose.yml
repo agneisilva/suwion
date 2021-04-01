@@ -4,7 +4,7 @@ services:
 
     proxy:
         image: ${DOCKER_REGISTRY:-agneisilva}/suwion.reverseproxy:${PLATFORM:-linux}-${TAG:-latest}
-        container_name: suwion.reverse_proxy
+        container_name: suwion.reverseproxy
         build: 
             context: ./src/reverseproxy
             dockerfile: Dockerfile

@@ -3,8 +3,8 @@ version: '3.4'
 services:
 
     proxy:
-        image: agneisilva/suwion.reverse_proxy:linux-latest
-        container_name: suwion.reverse_proxy
+        image: agneisilva/suwion.reverseproxy:linux-latest
+        container_name: suwion.reverseproxy
         environment: 
             HOST_SUWION_API: hml.api.suwion.com.br
             HOST_SUWION_PORTAL: hml.suwion.com.br
@@ -53,7 +53,6 @@ services:
             - mongodb_config:/data/configdb
         ports:
             - "27017:27017"
-            
             
     mongo-express:
         image: mongo-express
