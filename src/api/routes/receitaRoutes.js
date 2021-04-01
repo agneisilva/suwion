@@ -1,50 +1,25 @@
 const { verifyJWT } = require('../infra/securityExtension');
-const ReceitaBusiness = require('../business/receitaBusiness.js').ReceitaBusiness;
-
+const dependencies = require('../infra/dependencyInjection.js').LoadDependencies;
+const { responseHandle } = require('../infra/createResponse.js');
 
 var ReceitaRoutes = class ReceitaRoutes {
-    constructor(application) {
-        this._application = application;
+    constructor(app) {
+        this._application = app;
     }
 
     registrarRotas() {
-        //#region Receitas
-
-        this._application.get('/receita/:id', verifyJWT, (req, resp) => {
-            new ReceitaBusiness(req).buscarPorId(req.body.receitaId)
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    resp.status(err.status).json(err);
-                });
+        this._application.get('/receita/:id', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.buscarPorId(req.params.id));
         })
 
-        this._application.post('/receita', verifyJWT, (req, resp) => {
-            new ReceitaBusiness(req).cadastrar(req.body)
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    resp.status(err.status).json(err);
-                });
+        this._application.post('/receita', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.cadastrar(req.body));
         })
 
-        this._application.post('/receitas/', verifyJWT, (req, resp) => {
-            new ReceitaBusiness(req).filtrar(req.body)
-                .then(data => {
-                    resp.status(data.status).json(data);
-                })
-                .catch(err => {
-                    resp.status(err.status).json(err);
-                });
+        this._application.post('/receitas/', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._business.filtrar(req.body));
         })
-
-        //#endregion Receitas
-        return this;
     }
-
 }
-
 
 exports.ReceitaRoutes = ReceitaRoutes;
