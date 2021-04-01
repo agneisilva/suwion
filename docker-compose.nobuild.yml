@@ -13,6 +13,9 @@ services:
             HOST_SUWION_PORTAL: local.suwion.com.br
         networks:
             - bridge-network
+        depends_on:
+            - portal
+            - webapi
         ports:
             - 80:80
             - 443:443
