@@ -20,7 +20,7 @@ module.exports = () => {
             .catch(err => {
                 console.log('Error to connect on MongoDB. ', err);
                 connection = undefined;
-                next(err);
+                next();//bypass the request, not throwing error, just log it. 
             });
     }
 };
