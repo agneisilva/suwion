@@ -9,8 +9,8 @@ services:
             context: ./src/reverseproxy
             dockerfile: Dockerfile
         environment: 
-            HOST_SUWION_API: local.api.suwion.com.br
-            HOST_SUWION_PORTAL: local.suwion.com.br
+            HOST_SUWION_API: hml.api.suwion.com.br
+            HOST_SUWION_PORTAL: hml.suwion.com.br
         networks:
             - bridge-network
         depends_on:
