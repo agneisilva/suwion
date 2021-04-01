@@ -2,6 +2,15 @@ version: '3.4'
 
 services:
 
+    portal: 
+        image: ${DOCKER_REGISTRY:-agneisilva}/suwion.portal:${PLATFORM:-linux}-${TAG:-latest}
+        container_name: suwion.portal
+        restart: always
+        networks:
+         - bridge-network
+        ports:
+            - 3001:3000 
+
     webapi:
         image: agneisilva/suwion.webapi:linux-latest
         container_name: suwion.webapi

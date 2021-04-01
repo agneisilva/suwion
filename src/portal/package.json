@@ -1,0 +1,27 @@
+{
+  "name": "suwion_portal",
+  "version": "1.0.0",
+  "description": "Portal do projeto Suwion",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev"
+  },
+  "dependencies": {
+    "bootstrap": "^4.6.0",
+    "next": "^10.1.2",
+    "react": "^17.0.1",
+    "react-bootstrap": "^1.4.3",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrNaranjo/suwion_portal.git"
+  },
+  "author": "MrNaranjo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MrNaranjo/suwion_portal/issues"
+  },
+  "homepage": "https://github.com/MrNaranjo/suwion_portal#readme"
+}

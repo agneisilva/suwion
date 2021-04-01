@@ -2,6 +2,18 @@ version: '3.4'
 
 services:
 
+    portal:
+        image: ${DOCKER_REGISTRY:-agneisilva}/suwion.portal:${PLATFORM:-linux}-${TAG:-latest}
+        container_name: suwion.portal
+        restart: always
+        build:
+          context: ./src/portal/
+          dockerfile: Dockerfile
+        networks:
+         - bridge-network
+        ports:
+            - 3001:3000
+
     webapi:
         image: ${DOCKER_REGISTRY:-agneisilva}/suwion.webapi:${PLATFORM:-linux}-${TAG:-latest}
         container_name: suwion.webapi
@@ -9,7 +21,7 @@ services:
         build:
           context: ./src/api/
           dockerfile: Dockerfile
-        environment: 
+        environment:
             SUWION_MONGO_CONN_STR: mongodb://root:Mongo123!@mongo:27017/?authSource=admin
         depends_on:
          - mongo
@@ -49,10 +61,21 @@ services:
             - mongo
         networks:
             - bridge-network
+
+    portainer:
+        image: portainer/portainer
+        command: -H unix:///var/run/docker.sock
+        restart: always
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - portainer_data:/data
+        ports:
+            - 9000:9000
         
 volumes:
   mongodb:
   mongodb_config:
+  portainer_data:
                     
 networks: 
   bridge-network:
