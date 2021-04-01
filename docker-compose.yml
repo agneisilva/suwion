@@ -90,6 +90,18 @@ services:
             - portainer_data:/data
         ports:
             - 9000:9000
+
+    statping:
+        container_name: statping
+        image: statping/statping
+        restart: always
+        ports:
+            - 8080:8080
+        volumes:
+            - ./statping:/app
+        environment:
+            DB_CONN: sqlite
+
         
 volumes:
   mongodb:

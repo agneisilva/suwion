@@ -70,6 +70,16 @@ services:
         networks:
             - bridge-network
 
+    statping:
+        container_name: statping
+        image: statping/statping
+        restart: always
+        ports:
+            - 8080:8080
+        volumes:
+            - ./statping:/app
+        environment:
+            DB_CONN: sqlite
 
     
         
