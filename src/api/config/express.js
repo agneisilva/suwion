@@ -21,6 +21,12 @@ module.exports = function () {
         .then("dao")
         .then("routes")
         .into(application);
+    
+    application.use((error, req, res, next)=>{
+
+    });
+
+    
 
     return application;
 };

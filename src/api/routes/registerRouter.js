@@ -6,14 +6,11 @@ const ReceitaRoutes = require('./receitaRoutes.js').ReceitaRoutes;
 const SocialRoutes = require('./socialRoutes.js').SocialRoutes;
 const ToolsRoutes = require('./toolsRoutes.js').ToolsRoutes;
 const UsuarioRoutes = require('./usuarioRoutes.js').UsuarioRoutes;
+const CustomRoutes = require('../infra/customRoutes.js').CustomRoutes;
 
 //const LoadDependencies = require('../infra/dependencyInjection.js').LoadDependencies;
 
 module.exports = function (app) {
-
-    app.get('/', function (req, res) {
-        res.sendFile(path.join(__dirname + '/../index.html'));
-    });
 
     (new UsuarioRoutes(app)).registrarRotas();
     (new AutenticacaoRoutes(app)).registrarRotas();
