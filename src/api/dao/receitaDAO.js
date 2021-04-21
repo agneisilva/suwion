@@ -16,9 +16,12 @@ var ReceitaDAO = class ReceitaDAO {
     }
 
     cadastrar(receita){
-        //TODO
         return new Promise((res, rejec) => {
-            res("DAO NÃO IMPLEMENTADO");
+            this.collection.insertOne(receita, (err, result) => {
+                if (err) rejec(err);
+
+                res(receita);
+            });
         });
     }
 
