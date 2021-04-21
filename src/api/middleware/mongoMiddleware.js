@@ -8,7 +8,7 @@ module.exports = () => {
 
     return (req, res, next) => {
         if (!connection)
-            connection = MongoClient.connect(uri);
+            connection = MongoClient.connect(uri, { useUnifiedTopology: true });
 
         
         connection
