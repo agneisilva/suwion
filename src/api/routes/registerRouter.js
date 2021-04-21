@@ -19,5 +19,6 @@ module.exports = function (app) {
     (new ReceitaRoutes(app)).registrarRotas();
     (new SocialRoutes(app)).registrarRotas();
     (new ToolsRoutes(app)).registrarRotas();
+    (new CustomRoutes(app)).registrarRotas();
 
 }
