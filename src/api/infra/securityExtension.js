@@ -5,13 +5,13 @@ var verifyJWT = function(req, res, next) {
 
     var token = req.headers['authorization'];
     
-    token = token && token.split(' ')[1];
+    //token = token && token.split(' ')[1];
 
     const naoAutorizadoMsg = 'Não autorizado';
 
     if (!token) return res.status(401).send({ auth: false, message: naoAutorizadoMsg });
 
-    jwt.verify(token, process.env.SECRET, function (err, decoded) {
+    jwt.verify(token, (process.env.SECRET||"QwErT654"), function (err, decoded) {
         if (err) return res.status(401).send({ auth: false, message: naoAutorizadoMsg });
 
         req.usuarioId = decoded.usuarioId;

@@ -24,6 +24,7 @@ module.exports = function () {
     
     application.use((error, req, res, next)=>{
         console.log("###ERRO###");
+        console.log(error);
         res.status(500).json("ERRO");
     });
 

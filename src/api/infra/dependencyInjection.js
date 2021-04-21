@@ -37,7 +37,7 @@ const LoadDependencies = (context) => {
 const dependenciesResolve = (dependencyMap, req) => {
     let toInject = {};
     for (let dependency in dependencyMap) {
-        if (dependencyMap[dependency] instanceof DependenceStructure) {
+        //if (dependencyMap[dependency] instanceof DependenceStructure) {
             //Verifica se a dependencia precisa ser instanciada (class)
             if (!!dependencyMap[dependency].class && isClass(dependencyMap[dependency].class)) {
                 let args;
@@ -61,7 +61,7 @@ const dependenciesResolve = (dependencyMap, req) => {
                     toInject[dependencyMap[dependency].name] = dependencyMap[dependency].dependencies;
                 }
             }
-        }
+        //}
     }
 
     return toInject;

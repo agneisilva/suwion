@@ -6,11 +6,11 @@ const receitaDependencies = require('./receita.js');
 
 module.exports = (app) => {
     return {
-        usuarioRoutes: userDenpendencies(app),
-        autenticacaoRoutes: userDenpendencies(app),
-        ingredienteRoutes: ingredienteDependencies(app),
-        cardapioRoutes: cardapioDependencies(app),
-        listaCompraRoutes: listaCompraDependencies(app),
-        receitaRoutes: receitaDependencies(app),
+        UsuarioRoutes: userDenpendencies(app),
+        AutenticacaoRoutes: userDenpendencies(app),
+        IngredienteRoutes: ingredienteDependencies(app),
+        CardapioRoutes: cardapioDependencies(app),
+        ListaCompraRoutes: listaCompraDependencies(app),
+        ReceitaRoutes: receitaDependencies(app),
     }
 }
