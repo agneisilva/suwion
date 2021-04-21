@@ -23,7 +23,8 @@ module.exports = function () {
         .into(application);
     
     application.use((error, req, res, next)=>{
-
+        console.log("###ERRO###");
+        res.status(500).json("ERRO");
     });
 
     
