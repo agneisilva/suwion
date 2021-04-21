@@ -7,9 +7,10 @@ const receitaDependencies = require('./receita.js');
 module.exports = (app) => {
     return {
         usuarioRoutes: userDenpendencies(app),
+        autenticacaoRoutes: userDenpendencies(app),
         ingredienteRoutes: ingredienteDependencies(app),
         cardapioRoutes: cardapioDependencies(app),
-        usuarioRoutes: userDenpendencies(app),
-        usuarioRoutes: userDenpendencies(app),
+        listaCompraRoutes: listaCompraDependencies(app),
+        receitaRoutes: receitaDependencies(app),
     }
 }
