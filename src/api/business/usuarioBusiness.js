@@ -137,7 +137,7 @@ var UsuarioBusiness = class UsuarioBusiness {
         });
     }
 
-    autenticar(login, senha) {
+    autenticar({login, senha}) {
         return new Promise(async (res, rej) => {
 
             try {
@@ -151,7 +151,7 @@ var UsuarioBusiness = class UsuarioBusiness {
                 if (usuario.senha === hashreq) {
                     const token = jwt.sign(
                         { usuarioId: usuario._id },
-                        process.env.SECRET,
+                        process.env.SECRET || "QwErT654",
                         { expiresIn: process.env.SUWION_JWT_EXPIRESIN || '86400s' /*24horas*/ });
 
                     //res(new CreateResponse().AuthSucsess(token));

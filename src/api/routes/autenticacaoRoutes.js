@@ -9,7 +9,7 @@ var AutenticacaoRoutes = class AutenticacaoRoutes {
 
     registrarRotas() {
 
-        this._application.post('/login', logarUsuarioRules(), validate, dependencies(this), (req, res) => {
+        this._application.post('/login', logarUsuarioRules(), validate, dependencies(this), (req, resp) => {
             responseHandle(resp, this._userBusiness.autenticar(req.body));
         });
     }
