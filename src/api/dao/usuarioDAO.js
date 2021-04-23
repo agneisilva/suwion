@@ -1,4 +1,5 @@
 var mongo = require('mongodb');
+const modelo = require('../models/usuario.js').Usuario;
 
 const Collection = "usuario";
 
@@ -15,7 +16,7 @@ var UsuarioDAO = class UsuarioDAO {
             this.collection.findOne(query, (err, result) => {
                 if (err) rej(err);
 
-                res(result);
+                res(new modelo(result));
             });
         });
     }
@@ -28,7 +29,7 @@ var UsuarioDAO = class UsuarioDAO {
             this.collection.findOne(query, (err, result) => {
                 if (err) rej(err);
 
-                res(result);
+                res(!!result ? new modelo(result) : result);
             });
         });
     }
@@ -40,20 +41,19 @@ var UsuarioDAO = class UsuarioDAO {
             this.collection.findOne(query, (err, result) => {
                 if (err) rej(err);
 
-                res(result);
+                res(!!result ? new modelo(result) : result);
             });
         });
     }
 
-    //Qual a diferenca entre listarPorNickName() e buscarPorNickName()???
     listarPorNickName(nickName){
-        const query = { nickName: nickName };
+        const query = { nickName: {'$regex': nickName, '$options': 'i' } };
 
         return new Promise((res, rej) => {
             this.collection.find(query).toArray((err, result) => {
                 if (err) rej(err);
 
-                res(result);
+                res(result.map(usuario => new modelo(usuario).getClean()));
             });
         });
     }
@@ -96,6 +96,7 @@ var UsuarioDAO = class UsuarioDAO {
             });
         });
     }
+
 }
 
 exports.UsuarioDAO = UsuarioDAO;

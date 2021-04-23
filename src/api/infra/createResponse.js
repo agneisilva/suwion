@@ -1,3 +1,5 @@
+const {ErrorTipo} = require('../infra/error.js');
+
 var CreateResponse = class CreateResponse {
     Erro(msg, status = 500){
         return {
@@ -44,10 +46,36 @@ var CreateResponse = class CreateResponse {
 var responseHandle = (resp, promise) => {
     promise
         .then(data => {
+
+            if(!!data && !!data.getClean) data = data.getClean();
+
             resp.status(200).json(new CreateResponse().Success(data));
         })
         .catch(err => {
-            resp.status(500).json(new CreateResponse().Erro(err));
+
+            if(!!err && !!err.tipo)
+            {
+                switch (err.tipo) {
+                    case ErrorTipo.Authentication:
+                        let response = new CreateResponse().AuthErro();
+                        resp.status(response.status).json(response);
+                        break;
+                    // case ErrorTipo.Business:
+                    //     resp.status(500).json(new CreateResponse().Erro(err));
+                    //     break;
+                    default:
+                        break;
+                }
+
+                return;
+            }
+            
+            let status, content = err;
+
+            if((!!err && !!err.status)) status = err.status;
+            if((!!err && !!err.msg)) content = err.msg;
+
+            resp.status(status).json(new CreateResponse().Erro(content, status));
         });
 }
 

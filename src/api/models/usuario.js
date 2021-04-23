@@ -8,6 +8,14 @@ var Usuario = class Usuario {
         this.senha = args.senha;  
         this.salt = args.salt; 
     }
+
+    getClean(){
+        let limpo = Object.assign(this, {});
+        delete limpo.senha; 
+        delete limpo.salt;
+        
+        return limpo; 
+    }
 }
 
 exports.Usuario = Usuario;
