@@ -1,6 +1,10 @@
 const { verifyJWT } = require('../infra/securityExtension');
 const dependencies = require('../infra/dependencyInjection.js').LoadDependencies;
 const { responseHandle } = require('../infra/createResponse.js');
+const {
+    criarReceitaRules,
+    validate
+} = require('../business/validacoes/receitaValidacao.js');
 
 var ReceitaRoutes = class ReceitaRoutes {
     constructor(app) {
@@ -12,7 +16,7 @@ var ReceitaRoutes = class ReceitaRoutes {
             responseHandle(resp, this._business.buscarPorId(req.params.id));
         })
 
-        this._application.post('/receita', verifyJWT, dependencies(this), (req, resp) => {
+        this._application.post('/receita', criarReceitaRules(), validate, verifyJWT, dependencies(this), (req, resp) => {
             responseHandle(resp, this._business.cadastrar(req.body));
         })
 
