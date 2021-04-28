@@ -70,10 +70,12 @@ var responseHandle = (resp, promise) => {
                 return;
             }
             
-            let status, content = err;
+            let status = 500, content = err;
 
             if((!!err && !!err.status)) status = err.status;
             if((!!err && !!err.msg)) content = err.msg;
+
+            if(!status) status = 500;
 
             resp.status(status).json(new CreateResponse().Erro(content, status));
         });
