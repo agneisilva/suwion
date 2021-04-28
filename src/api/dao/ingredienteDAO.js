@@ -1,5 +1,5 @@
 var mongo = require('mongodb');
-
+const { cleanRegex } = require('../infra/helpers.js');
 const Collection = "ingrediente";
 
 var IngredienteDAO = class IngredienteDAO {
@@ -31,7 +31,7 @@ var IngredienteDAO = class IngredienteDAO {
     }
 
     buscar(descricao) {
-        const query = { descricao: {'$regex': descricao, '$options': 'i' } };
+        const query = { descricao: {'$regex': cleanRegex(descricao), '$options': 'i' } };
 
         return new Promise((res, rej) => {
             this.collection.find(query).toArray((err, result) => {

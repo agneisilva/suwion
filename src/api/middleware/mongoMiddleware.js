@@ -10,7 +10,6 @@ module.exports = () => {
         if (!connection)
             connection = MongoClient.connect(uri, { useUnifiedTopology: true });
 
-        
         connection
             .then(client => {
                 console.log('Mongo connected');

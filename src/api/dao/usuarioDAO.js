@@ -1,5 +1,6 @@
 var mongo = require('mongodb');
 const modelo = require('../models/usuario.js').Usuario;
+const { cleanRegex } = require('../infra/helpers.js');
 
 const Collection = "usuario";
 
@@ -35,7 +36,8 @@ var UsuarioDAO = class UsuarioDAO {
     }
 
     buscarPorNickName(nickName){
-        const query = { nickName: nickName };
+        // const query = { nickName: nickName };
+        const query = { nickName: {'$regex': `^${cleanRegex(nickName)}$`, '$options': 'i' } };
 
         return new Promise((res, rej) => {
             this.collection.findOne(query, (err, result) => {
@@ -47,7 +49,7 @@ var UsuarioDAO = class UsuarioDAO {
     }
 
     listarPorNickName(nickName){
-        const query = { nickName: {'$regex': nickName, '$options': 'i' } };
+        const query = { nickName: {'$regex': cleanRegex(nickName), '$options': 'i' } };
 
         return new Promise((res, rej) => {
             this.collection.find(query).toArray((err, result) => {

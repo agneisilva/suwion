@@ -39,8 +39,8 @@ var UsuarioRoutes = class UsuarioRoutes {
             responseHandle(resp, this._userBusiness.alterar(new Usuario(req.body)));
         })
 
-        this._application.delete('/usuario', deletarUsuarioRules(), validate, verifyJWT, dependencies(this), (req, resp) => {
-            responseHandle(resp, this._userBusiness.deletar(req.body.usuarioId));
+        this._application.delete('/usuario', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._userBusiness.deletar(req.usuarioId));
         });
     }
 }
