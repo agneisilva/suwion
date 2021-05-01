@@ -31,7 +31,7 @@ var UsuarioRoutes = class UsuarioRoutes {
             responseHandle(resp, this._userBusiness.listarPorNickName(req.params.nickname));
         })
 
-        this._application.post('/usuario/', criarUsuarioRules(), validate, dependencies(this), (req, resp) => {
+        this._application.post('/usuario/', criarUsuarioRules(), validate, dependencies(this),  (req, resp) => {
             responseHandle(resp, this._userBusiness.cadastrar(new Usuario(req.body)));
         })
 

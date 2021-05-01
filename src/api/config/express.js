@@ -9,7 +9,9 @@ const allDependenciesMaps = require('./dependenciesMap/dependenciesMap.js');
 module.exports = function () {
     var application = express();
 
-    application.use(bodyParser());
+    application.use(bodyParser.urlencoded());
+    application.use(bodyParser.json());
+    
     application.use(cors());
     application.use(mongoMiddleware());
     application.use(LoadMaps(allDependenciesMaps(application)));
