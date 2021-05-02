@@ -4,6 +4,15 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Run API",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\index.js"
+        },  
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Run Mocha",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "args": ["${workspaceRoot}/test/**/*.js"],
