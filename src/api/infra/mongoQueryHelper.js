@@ -1,4 +1,5 @@
 var mongo = require('mongodb');
+const { cleanRegex } = require('./helpers.js');
 
 let getCompleteDoc = (id, localField, collectionToJoin, foreignField) => {
     let query = [
@@ -29,7 +30,7 @@ let selectById = (value) => {
 let selectExact = (field, value) => {
     let query = {};
 
-    query[field] = { '$regex': "^" + value + "$", '$options': 'i' };
+    query[field] = { '$regex': "^" + cleanRegex(value) + "$", '$options': 'i' };
 
     return query;
 }
@@ -37,7 +38,7 @@ let selectExact = (field, value) => {
 let selectConteins = (field, value) => {
     let query = {};
 
-    query[field] = { '$regex': value, '$options': 'i' };
+    query[field] = { '$regex': cleanRegex(value), '$options': 'i' };
 
     return query;
 }

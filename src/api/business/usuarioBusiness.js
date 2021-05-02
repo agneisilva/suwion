@@ -1,5 +1,6 @@
 const { genRandomString, sha512 } = require('../infra/securityExtension');
 const jwt = require('jsonwebtoken');
+const {Error, ErrorTipo} = require('../infra/error.js');
 
 var UsuarioBusiness = class UsuarioBusiness {
     constructor({ userDao }) {
@@ -73,7 +74,7 @@ var UsuarioBusiness = class UsuarioBusiness {
                     ])
 
                 if (result[0] || result[1])
-                    return rej("Usuário já cadastrado");
+                    return rej(new Error( {status:422 , msg: "Usuário já cadastrado"}));
 
                 usuario.salt = genRandomString(10);
                 usuario.senha = sha512(usuario.senha, usuario.salt);
@@ -154,12 +155,10 @@ var UsuarioBusiness = class UsuarioBusiness {
                         process.env.SECRET || "QwErT654",
                         { expiresIn: process.env.SUWION_JWT_EXPIRESIN || '86400s' /*24horas*/ });
 
-                    //res(new CreateResponse().AuthSucsess(token));
                     res(token);
                 }
                 else {
-                    //res(new CreateResponse().AuthErro());
-                    res();
+                    rej(new Error({tipo: ErrorTipo.Authentication}));
                 }
 
 

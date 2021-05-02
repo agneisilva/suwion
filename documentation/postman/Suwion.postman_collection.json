@@ -14,8 +14,17 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOiI2MDgyMDVkZjA4ZmM0NzA4MThjZDg1ZDQiLCJpYXQiOjE2MTkxMzM5NDgsImV4cCI6MTYxOTIyMDM0OH0.D3A6pGtl3rzsWOzYVY-RpzIpoW7l9aCFanghtmNZnhg",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -26,15 +35,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/ingrediente/5fa060468e9a772c143d06dc",
-							"protocol": "http",
+							"raw": "{{host}}/ingrediente/6080af9bfb3f65ba54b8a6cd",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3000",
 							"path": [
 								"ingrediente",
-								"5fa060468e9a772c143d06dc"
+								"6080af9bfb3f65ba54b8a6cd"
 							]
 						}
 					},
@@ -47,7 +54,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"descricao\": \"açúcar\"\r\n}",
+							"raw": "{\r\n    \"descricao\": \"Açúcar\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -55,12 +62,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/ingrediente",
-							"protocol": "http",
+							"raw": "{{host}}/ingrediente",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3000",
 							"path": [
 								"ingrediente"
 							]
@@ -71,15 +76,23 @@
 				{
 					"name": "listarIngrediente",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOiI2MDFiMDM1NzIzM2NhMjRiMThjYmQwNGUiLCJpYXQiOjE2MTIzODQwNjIsImV4cCI6MTYxMjQ3MDQ2Mn0.KPSpFp-pzYq5NLEj_8diDjFvU6yMVyl-MCoMinDOnhs",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/ingredientes",
-							"protocol": "http",
+							"raw": "{{host}}/ingredientes",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3000",
 							"path": [
 								"ingredientes"
 							]
@@ -100,12 +113,10 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3000/ingredientes/s",
-							"protocol": "http",
+							"raw": "{{host}}/ingredientes/s",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3000",
 							"path": [
 								"ingredientes",
 								"s"
@@ -129,12 +140,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/ingrediente",
-							"protocol": "http",
+							"raw": "{{host}}/ingrediente",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3000",
 							"path": [
 								"ingrediente"
 							]
@@ -157,14 +166,306 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/ingrediente",
-							"protocol": "http",
+							"raw": "{{host}}/ingrediente",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3000",
 							"path": [
 								"ingrediente"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Init",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tools/hc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tools",
+								"hc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Autorizacao",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjExNDQ1MTQwLCJleHAiOjE2MTE0NDU0NDB9.7vvLDAg8ozCgsIt8Yug1IZjND6kaisN2RLXqwSpVfeM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"loginx\": \"agnei.silva\", \r\n    \"senha\": \"agnei@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuário",
+			"item": [
+				{
+					"name": "cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"agnei silva\", \r\n    \"email\": \"agnei.silva@outlook.com\", \r\n    \"nickName\": \"agnei.silva\", \r\n    \"senha\": \"agnei@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuario",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarPorId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOiI2MDgyMDVkZjA4ZmM0NzA4MThjZDg1ZDQiLCJpYXQiOjE2MTkxMzM5NDgsImV4cCI6MTYxOTIyMDM0OH0.D3A6pGtl3rzsWOzYVY-RpzIpoW7l9aCFanghtmNZnhg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"agnei silva\", \r\n    \"email\": \"agnei.silva@outlook.com\", \r\n    \"nickName\": \"agnei.silva\", \r\n    \"senha\": \"agnei@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuario/608205df08fc470818cd85d4",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuario",
+								"608205df08fc470818cd85d4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarPorEmail",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOiI2MDgyMDVkZjA4ZmM0NzA4MThjZDg1ZDQiLCJpYXQiOjE2MTkxMzM5NDgsImV4cCI6MTYxOTIyMDM0OH0.D3A6pGtl3rzsWOzYVY-RpzIpoW7l9aCFanghtmNZnhg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuario/email/agnei.silva@outlook.com",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuario",
+								"email",
+								"agnei.silva@outlook.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarPorNickName",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOiI2MDgyMDVkZjA4ZmM0NzA4MThjZDg1ZDQiLCJpYXQiOjE2MTkxMzM5NDgsImV4cCI6MTYxOTIyMDM0OH0.D3A6pGtl3rzsWOzYVY-RpzIpoW7l9aCFanghtmNZnhg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuario/nickname/agnei.silva",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuario",
+								"nickname",
+								"agnei.silva"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListarPorNickName",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOiI2MDgyMDVkZjA4ZmM0NzA4MThjZDg1ZDQiLCJpYXQiOjE2MTkxMzM5NDgsImV4cCI6MTYxOTIyMDM0OH0.D3A6pGtl3rzsWOzYVY-RpzIpoW7l9aCFanghtmNZnhg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios/nickname/t",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios",
+								"nickname",
+								"t"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"608205df08fc470818cd85d4\",\r\n    \"nome\": \"agnei de carvalho silva \", \r\n    \"email\": \"agnei.silva@outlook.com\", \r\n    \"nickName\": \"agnei.silva\", \r\n    \"senha\": \"agnei@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuario",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"608205df08fc470818cd85d4\",\r\n    \"nome\": \"agnei de carvalho silva \", \r\n    \"email\": \"agnei.silva@outlook.com\", \r\n    \"nickName\": \"agnei.silva\", \r\n    \"senha\": \"agnei@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuario",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuario"
 							]
 						}
 					},

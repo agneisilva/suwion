@@ -12,7 +12,7 @@ const criarUsuarioRules = () =>
         body('nome').exists().withMessage('não pode ser vazio'), 
         body('email').exists().isEmail().withMessage('não pode ser vazio ou invalido'), 
         body('nickName').exists().withMessage('não pode ser vazio'), 
-        body('senha').isLength({ min: 6}).withMessage('não pode ser vazio')
+        body('senha').isLength({ min: 6}).withMessage('senha de conter ao menos 6 caracteres')
     ]
 }
 

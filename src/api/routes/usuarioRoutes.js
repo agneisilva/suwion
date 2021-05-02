@@ -16,22 +16,22 @@ var UsuarioRoutes = class UsuarioRoutes {
 
     registrarRotas() {
         this._application.get('/usuario/:id', verifyJWT, dependencies(this), (req, resp) => {
-            responseHandle(resp, this._userBusiness.buscarPorId(req.body.usuarioId));
+            responseHandle(resp, this._userBusiness.buscarPorId(req.params.id));
         })
 
-        this._application.get('/usuario/:email', verifyJWT, dependencies(this), (req, resp) => {
-            responseHandle(resp, this._userBusiness.buscarPorEmail(req.body.email));
+        this._application.get('/usuario/email/:email', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._userBusiness.buscarPorEmail(req.params.email));
         })
 
-        this._application.get('/usuario/:nickname', verifyJWT, dependencies(this), (req, resp) => {
-            responseHandle(resp, this._userBusiness.buscarPorNickName(req.body.nickname));
+        this._application.get('/usuario/nickname/:nickname', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._userBusiness.buscarPorNickName(req.params.nickname));
         })
 
-        this._application.get('/usuarios/:nickname', verifyJWT, dependencies(this), (req, resp) => {
-            responseHandle(resp, this._userBusiness.listarPorNickName(req.body.nickname));
+        this._application.get('/usuarios/nickname/:nickname', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._userBusiness.listarPorNickName(req.params.nickname));
         })
 
-        this._application.post('/usuario/', criarUsuarioRules(), validate, dependencies(this), (req, resp) => {
+        this._application.post('/usuario/', criarUsuarioRules(), validate, dependencies(this),  (req, resp) => {
             responseHandle(resp, this._userBusiness.cadastrar(new Usuario(req.body)));
         })
 
@@ -39,8 +39,8 @@ var UsuarioRoutes = class UsuarioRoutes {
             responseHandle(resp, this._userBusiness.alterar(new Usuario(req.body)));
         })
 
-        this._application.delete('/usuario', deletarUsuarioRules(), validate, verifyJWT, dependencies(this), (req, resp) => {
-            responseHandle(resp, this._userBusiness.deletar(req.body.usuarioId));
+        this._application.delete('/usuario', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._userBusiness.deletar(req.usuarioId));
         });
     }
 }
