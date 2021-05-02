@@ -1,9 +1,9 @@
-var mongo = require('mongodb');
+const { selectExact, selectById, updateById } = require('../infra/mongoQueryHelper.js');
 
 const Collection = "ingrediente";
 
 var IngredienteDAO = class IngredienteDAO {
-    constructor({connection}) {
+    constructor({ connection }) {
         this._connection = connection;
         this.collection = this._connection.collection(Collection);
     }
@@ -19,10 +19,10 @@ var IngredienteDAO = class IngredienteDAO {
     }
 
     buscarPorId(ingredienteId) {
-        const query = { _id: new mongo.ObjectID(ingredienteId) };
+        //const query = { _id: new mongo.ObjectID(ingredienteId) };
 
         return new Promise((res, rej) => {
-            this.collection.findOne(query, (err, result) => {
+            this.collection.findOne(selectById(ingredienteId), (err, result) => {
                 if (err) rej(err);
 
                 res(result);
@@ -31,10 +31,10 @@ var IngredienteDAO = class IngredienteDAO {
     }
 
     buscar(descricao) {
-        const query = { descricao: {'$regex': descricao, '$options': 'i' } };
+        //const query = { descricao: {'$regex': "^" + descricao + "$", '$options': 'i' } };
 
         return new Promise((res, rej) => {
-            this.collection.find(query).toArray((err, result) => {
+            this.collection.findOne(selectExact("descricao", descricao), (err, result) => {
                 if (err) rej(err);
 
                 res(result);
@@ -53,15 +53,17 @@ var IngredienteDAO = class IngredienteDAO {
     }
 
     alterar(ingrediente) {
-        //Criando query de busca para alteração
-        const query = { _id: new mongo.ObjectID(ingrediente._id) };
-        //Removendo propriedade Id do object para não permitir alterar o Id 
-        delete ingrediente._id;
-        //Criando novo objeto que será alterado 
-        var newvalues = { $set: ingrediente };
+        // //Criando query de busca para alteração
+        // const query = selectById(ingrediente._id);
+        // //Removendo propriedade Id do object para não permitir alterar o Id 
+        // delete ingrediente._id;
+        // //Criando novo objeto que será alterado 
+        // var newvalues = { $set: ingrediente };
+        let query = updateById(ingrediente);
 
         return new Promise((res, rej) => {
-            this.collection.updateOne(query, newvalues, (err, result) => {
+            //this.collection.updateOne(query, newvalues, (err, result) => {
+            this.collection.updateOne(query[0], query[1], (err, result) => {
                 if (err) rej(err);
 
                 res(result);
@@ -70,10 +72,10 @@ var IngredienteDAO = class IngredienteDAO {
     }
 
     deletar(ingredienteId) {
-        const query = { _id: new mongo.ObjectID(ingredienteId) };
+        //const query = { _id: new mongo.ObjectID(ingredienteId) };
 
         return new Promise((res, rej) => {
-            this.collection.deleteOne(query, (err, result) => {
+            this.collection.deleteOne(selectById(ingredienteId), (err, result) => {
                 if (err) rej(err);
 
                 res(result);

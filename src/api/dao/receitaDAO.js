@@ -1,4 +1,11 @@
-var mongo = require('mongodb');
+const {
+    ToObjectID,
+    selectConteins,
+    selectExact,
+    selectById,
+    updateById,
+    getCompleteDoc
+} = require('../infra/mongoQueryHelper.js');
 
 const Collection = "receita";
 
@@ -9,13 +16,25 @@ var ReceitaDAO = class ReceitaDAO {
     }
 
     buscarPorId(id){
-        //TODO
+        let query = getCompleteDoc(id, "autor", "usuario", "_id");
         return new Promise((res, rejec) => {
-            res("DAO NÃO IMPLEMENTADO");
+            this.collection.aggregate(query, (err, result) => {
+                if (err) rejec(err);
+
+                result.toArray().then(
+                    receitas=>{
+                        if(receitas.length == 1) res(receitas[0]);
+                        else rejec(new Error("Erro ao localizar a receita!"));
+                    }
+                ).catch(err=>{
+                    rejec(err);
+                });
+            });
         });
     }
 
     cadastrar(receita){
+        receita.autor = ToObjectID(receita.autor);
         return new Promise((res, rejec) => {
             this.collection.insertOne(receita, (err, result) => {
                 if (err) rejec(err);

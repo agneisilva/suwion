@@ -1,5 +1,7 @@
 const ReceitaDAO = require('../../dao/receitaDAO.js').ReceitaDAO;
 const ReceitaBusiness = require('../../business/receitaBusiness.js').ReceitaBusiness;
+const IngredienteDAO = require('../../dao/ingredienteDAO.js').IngredienteDAO;
+const IngredienteBusiness = require('../../business/ingredienteBusiness.js').IngredienteBusiness;
 const DependencyBuilder = require('../../infra/dependencyInjection.js').DependencyBuilder;
 
 module.exports = (app) => {
@@ -11,14 +13,23 @@ module.exports = (app) => {
             value: "$$db"
         })
         .register({
-            name: "dao",
+            name: "receitaDao",
             entity: ReceitaDAO
         })
         .register({
-            name: "_business",
+            name: "_receitaBusiness",
             entity: ReceitaBusiness
         })
-        .addDependencyTree("_business.dao.connection")
+        .register({
+            name: "ingredienteDao",
+            entity: IngredienteDAO
+        })
+        .register({
+            name: "_ingredienteBusiness",
+            entity: IngredienteBusiness
+        })
+        .addDependencyTree("_receitaBusiness.receitaDao.connection")
+        .addDependencyTree("_receitaBusiness._ingredienteBusiness.ingredienteDao.connection")
 
     return builder.getMap();
 }

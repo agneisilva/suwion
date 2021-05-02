@@ -1,7 +1,7 @@
 
 var IngredienteBusiness = class IngredienteBusiness {
-    constructor({ dao }) {
-        this._dao = dao;
+    constructor({ ingredienteDao }) {
+        this._dao = ingredienteDao;
     }
 
     listar(filtro) {
