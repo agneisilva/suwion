@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
+import { Container, Row, Col, Nav, Navbar, ListGroup } from 'react-bootstrap';
 import Link from 'next/link';
 
 class Page extends React.Component {
@@ -12,6 +12,7 @@ class Page extends React.Component {
         };
 
         const contentStyle = {
+            minHeight: "50vh"
         };
 
         return <div className="Layout" style={layoutStyle}>
@@ -92,7 +93,72 @@ class Rodape extends React.Component {
     }
 
     render() {
-        return <div className="fixed-bottom navbar-expand-sm navbar-dark bg-dark" >Suwion</div>;
+        return <footer
+            style={{ backgroundColor: "#DFDFDF", padding: "15px 0px 10px", minHeight: "20vh" }}>
+            <Container>
+                Suwion - Site Map
+                <Row>
+                    <Col lg={3} md={6} sm={12}>
+                        <strong>Usuário</strong>
+                        <ListGroup>
+                            <ListGroup.Item>
+                                <Link href="/usuario/cadastrar">
+                                    Cadastrar
+                                </Link>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                <Link href="/usuario/autenticar">
+                                    Autenticar
+                                </Link>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                <Link href="/usuario/perfil">
+                                    Perfil
+                                </Link>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                <Link href="/usuario/editar">
+                                    Editar
+                                </Link>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                <Link href="/usuario/listar">
+                                    Localizar
+                                </Link>
+                            </ListGroup.Item>
+                        </ListGroup>
+                    </Col>
+                    <Col lg={3} md={6} sm={12}>
+                        <strong>Receitas</strong>
+                        <ListGroup>
+                            <ListGroup.Item>
+                                <Link href="/receita/localizar">
+                                    Localizar
+                                </Link>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                <Link href="/receita/cadastrar">
+                                    Cadastrar
+                                </Link>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                <Link href="/receita/top20sem">
+                                    Top 20 da semana
+                                </Link>
+                            </ListGroup.Item>
+                        </ListGroup>
+                    </Col>
+                    <Col lg={3} md={6} sm={12}>
+                        <strong>...</strong>
+
+                    </Col>
+                    <Col lg={3} md={6} sm={12}>
+                        <strong>Redes Sociais</strong>
+
+                    </Col>
+                </Row>
+            </Container>
+        </footer>;
     }
 }
 
