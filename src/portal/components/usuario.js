@@ -1,6 +1,7 @@
 import React from 'react';
 import fetch from 'node-fetch';
-import { Container, Row, Col, Table } from 'react-bootstrap';
+import { Container, Row, Col, Table, Form, FormControl, Button, FormLabel, FormGroup } from 'react-bootstrap';
+import Link from 'next/link'
 
 
 class Autenticacao extends React.Component {
@@ -9,17 +10,20 @@ class Autenticacao extends React.Component {
     }
 
     render() {
-        return <div>Autenticacao</div>
-    }
-}
-
-class PerfilUsuario extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return <div>PerfilUsuario</div>
+        return <Container>
+            <Form className="">
+                <h1 className="h3 mb-3 font-weight-normal">Por favor, se faça seu login</h1>
+                <FormGroup>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl type="text"  className="mr-sm-2" />
+                </FormGroup>
+                <FormGroup>
+                    <FormLabel>Senha <Link href="/"><a>Esqueceu?</a></Link></FormLabel>
+                    <FormControl type="password" className="mr-sm-2" />
+                </FormGroup>
+                <Button className="btn-lg btn-block" variant="primary">Acessar</Button>
+            </Form>
+        </Container>;
     }
 }
 
@@ -104,6 +108,16 @@ class CadastroUsuario extends React.Component {
     }
 }
 
+class PerfilUsuario extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return <div>PerfilUsuario</div>
+    }
+}
+
 class ListarUsuarios extends React.Component {
     constructor(props) {
         super(props);
@@ -179,5 +193,6 @@ class EditarUsuario extends React.Component {
 export {
     CadastroUsuario,
     EditarUsuario,
-    ListarUsuarios
+    ListarUsuarios,
+    Autenticacao
 };

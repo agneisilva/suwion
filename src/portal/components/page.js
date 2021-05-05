@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Nav } from 'react-bootstrap';
+import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
 import Link from 'next/link';
 
 class Page extends React.Component {
@@ -8,12 +8,20 @@ class Page extends React.Component {
     }
 
     render() {
-        return <Container>
-            <Cabecalho></Cabecalho>
-            <Menu></Menu>
-            {this.props.children}
-            <Rodape></Rodape>
-        </Container>;
+        const layoutStyle = {
+        };
+
+        const contentStyle = {
+        };
+
+        return <div className="Layout" style={layoutStyle}>
+            <Cabecalho />
+            <Menu />
+            <Container className="Content container" style={contentStyle}>
+                {this.props.children}
+            </Container>
+            <Rodape />
+        </div>;
     }
 }
 
@@ -23,7 +31,26 @@ class Cabecalho extends React.Component {
     }
 
     render() {
-        return <div>CABEÇALHO</div>;
+        return <header>
+            <Navbar className="Header" >
+                <Container className="">
+                    <svg className="mb-4" alt="" width="50" height="50" viewBox="26.9 17.1 135.1 117.3" xmlns="http://www.w3.org/2000/svg"><path d="m124.4 67.8-28.8-49.9c-.3-.6-1-.8-1.5-.5-.2.1-.4.3-.5.5l-28.8 49.9 29.8-17.2zm-67.9 28.7 17.6 5.6v4.2l20.4 11.8 15.3-8.8-53.4-16.9v-10.4l-29.2 50.6c-.3.6-.2 1.3.4 1.6.2.1.4.2.6.2h59.2l-31-17.9v-20zm105.3 36.1-29.2-50.6v10.4l-17.5-5.6v-4.1l-20.4-11.8-15 8.7 53 17v19.9l-31 17.9h59.2c.7-.1 1.1-.8 1-1.5 0-.1 0-.2-.1-.3z" fill="#f3a41e" /></svg>
+                    <a href="#" className="navbar-brand d-flex align-items-left py-2">Suwion</a>
+                    <Nav className="justify-content-right" defaultActiveKey="/home" as="ul">
+                        <Nav.Item as="li">
+                            <Link href="/usuario/cadastrar">
+                                <a className="nav-link">Cadastrar</a>
+                            </Link>
+                        </Nav.Item>
+                        <Nav.Item as="li">
+                            <Link href="/usuario/autenticar">
+                                <a className="nav-link">Autenticar</a>
+                            </Link>
+                        </Nav.Item>
+                    </Nav>
+                </Container>
+            </Navbar>
+        </header>;
     }
 }
 
@@ -37,44 +64,25 @@ class Menu extends React.Component {
         return <Nav className="justify-content-center" defaultActiveKey="/home" as="ul">
             <Nav.Item as="li">
                 <Link href="/">
-                    <a className="nav-link">Home</a>
+                    <a className="nav-link">Cardápios</a>
                 </Link>
             </Nav.Item>
             <Nav.Item as="li">
                 <Link href="/usuario/cadastrar">
-                    <a className="nav-link">Cadastrar</a>
+                    <a className="nav-link">Lista de Compras</a>
                 </Link>
             </Nav.Item>
             <Nav.Item as="li">
                 <Link href="/usuario/listar">
-                    <a className="nav-link">Listar</a>
+                    <a className="nav-link">Receitas</a>
                 </Link>
             </Nav.Item>
             <Nav.Item as="li">
-                <Link href="/usuario/editar">
-                    <a className="nav-link">Editar</a>
+                <Link href="/usuario/autenticar">
+                    <a className="nav-link">Ingredientes</a>
                 </Link>
             </Nav.Item>
         </Nav>;
-
-
-        //     return  <ul>
-        //     <li>
-        //         <Link href="/">
-        //             <a>Home</a>
-        //         </Link>
-        //     </li>
-        //     <li>
-        //         <Link href="/usuario/cadastrar">
-        //             <a>Cadastrar</a>
-        //         </Link>
-        //     </li>
-        //     <li>
-        //         <Link href="/usuario/listar">
-        //             <a>Listar</a>
-        //         </Link>
-        //     </li>
-        // </ul>;
     }
 }
 
@@ -84,15 +92,7 @@ class Rodape extends React.Component {
     }
 
     render() {
-        let data = new Date().getFullYear();
-
-        if (data > 2021) {
-            data = "2021 - " + data;
-        }
-
-        return <div>
-            <div>&copy;{data} SUWION</div>
-        </div>;
+        return <div className="fixed-bottom navbar-expand-sm navbar-dark bg-dark" >Suwion</div>;
     }
 }
 
