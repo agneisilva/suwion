@@ -10,7 +10,7 @@ var Receita = class Receita {
         this.tags = args.tags;
         this.nota = args.nota;
         this.tempo = args.tempo; //Tempo de preparo (minutos)
-        this.dificuldade = args.dificuldade;
+        this.dificuldade = args.dificuldade;//1-100
     }
 }
 

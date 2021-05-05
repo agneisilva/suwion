@@ -16,27 +16,27 @@ var IngredienteRoutes = class IngredienteRoutes {
 
     registrarRotas() {
         this._application.get('/ingrediente/:id', verifyJWT, dependencies(this), (req, resp) => {
-            responseHandle(resp, this._business.buscarPorId(req.params.id));
+            responseHandle(resp, this._ingredienteBusiness.buscarPorId(req.params.id));
         })
 
         this._application.get('/ingredientes/:descricao', verifyJWT, dependencies(this), (req, resp) => {
-            responseHandle(resp, this._business.buscar(req.params.descricao));
+            responseHandle(resp, this._ingredienteBusiness.buscar(req.params.descricao));
         })
 
-        this._application.get('/ingredientes', verifyJWT, dependencies(this), (req, resp) => {
-            responseHandle(resp, this._business.listar(req.body));
+        this._application.post('/ingredientes', verifyJWT, dependencies(this), (req, resp) => {
+            responseHandle(resp, this._ingredienteBusiness.listar(req.body));
         })
 
         this._application.post('/ingrediente', criarIngredienteRules(), validate, verifyJWT, dependencies(this), (req, resp) => {
-            responseHandle(resp, this._business.cadastrar(new Ingrediente(req.body)));
+            responseHandle(resp, this._ingredienteBusiness.cadastrar(new Ingrediente(req.body)));
         })
 
         this._application.put('/ingrediente', alterarIngredienteRules(), validate, verifyJWT, dependencies(this), (req, resp) => {
-            responseHandle(resp, this._business.alterar(new Ingrediente(req.body)));
+            responseHandle(resp, this._ingredienteBusiness.alterar(new Ingrediente(req.body)));
         })
 
         this._application.delete('/ingrediente', deletarIngredienteRules(), validate, verifyJWT, dependencies(this), (req, resp) => {
-            responseHandle(resp, this._business.deletar(req.body.ingredienteId));
+            responseHandle(resp, this._ingredienteBusiness.deletar(req.body.ingredienteId));
         })
     }
 }

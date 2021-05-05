@@ -11,14 +11,14 @@ module.exports = (app) => {
             value: "$$db"
         })
         .register({
-            name: "dao",
+            name: "ingredienteDao",
             entity: IngredienteDAO
         })
         .register({
-            name: "_business",
+            name: "_ingredienteBusiness",
             entity: IngredienteBusiness
         })
-        .addDependencyTree("_business.dao.connection");
+        .addDependencyTree("_ingredienteBusiness.ingredienteDao.connection");
 
     return builder.getMap();
 }
