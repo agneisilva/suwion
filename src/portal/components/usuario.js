@@ -15,7 +15,7 @@ class Autenticacao extends React.Component {
                 <h1 className="h3 mb-3 font-weight-normal">Por favor, se faça seu login</h1>
                 <FormGroup>
                     <FormLabel>Email</FormLabel>
-                    <FormControl type="text"  className="mr-sm-2" />
+                    <FormControl type="text" className="mr-sm-2" />
                 </FormGroup>
                 <FormGroup>
                     <FormLabel>Senha <Link href="/"><a>Esqueceu?</a></Link></FormLabel>
@@ -76,13 +76,15 @@ class CadastroUsuario extends React.Component {
 
     render() {
         return <div>CadastroUsuario
-            <div>
-                <label>Nome: </label>
-                <input id="nome"
-                    value={this.state.nome}
-                    onChange={this.atribuirCarregamento.bind(this, "nome")}
-                ></input>
-            </div>
+            <Row>
+                <Col md={3}>Nome: </Col>
+                <Col md={9}>
+                    <input id="nome"
+                        value={this.state.nome}
+                        onChange={this.atribuirCarregamento.bind(this, "nome")}
+                    ></input>
+                </Col>
+            </Row>
             <div>
                 <label>Email: </label>
                 <input id="email"

@@ -1,10 +1,10 @@
 import Page from '../../components/page.js';
-import { CadastroReceita } from '../../components/receita.js';
+import { BuscaReceita } from '../../components/receita.js';
 
 function Cadastrar() {
     return <Page>
-        <CadastroReceita>
-        </CadastroReceita>
+        <BuscaReceita>
+        </BuscaReceita>
     </Page>;
 }
 
