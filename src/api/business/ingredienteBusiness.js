@@ -40,6 +40,20 @@ var IngredienteBusiness = class IngredienteBusiness {
         });
     }
 
+    buscarAutoComplete(descricao){
+        return new Promise((res, rej)=>{
+            const limite = 20;
+
+            this._dao.buscarAutoComplete(descricao, limite)
+                .then(ingredientes=>{
+                    res(ingredientes);
+                })
+                .catch(err=>{
+                    rej("Erro ao listar ingredientes!");
+                });
+        });
+    }
+
     cadastrar(ingrediente) {
         return new Promise((res, rej) => {
             this._dao.cadastrar(ingrediente)

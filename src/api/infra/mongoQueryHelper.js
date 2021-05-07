@@ -43,6 +43,22 @@ let selectConteins = (field, value) => {
     return query;
 }
 
+let selectStartWith = (field, value) => {
+    let query = {};
+
+    query[field] = { '$regex': "^"+cleanRegex(value), '$options': 'i' };
+
+    return query;
+}
+
+let regexFilter = (field, value) => {
+    let query = {};
+
+    query[field] = { '$regex': value, '$options': 'i' };
+
+    return query;
+}
+
 let updateById = (doc) => {
     let identifyQuery = selectById(doc._id);
 
@@ -61,5 +77,7 @@ exports.getCompleteDoc = getCompleteDoc;
 exports.selectById = selectById;
 exports.selectExact = selectExact;
 exports.selectConteins = selectConteins;
+exports.selectStartWith = selectStartWith;
+exports.regexFilter = regexFilter;
 exports.updateById = updateById;
 exports.ToObjectID = ToObjectID;

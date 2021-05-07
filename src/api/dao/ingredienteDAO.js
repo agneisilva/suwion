@@ -1,4 +1,4 @@
-const { selectExact, selectById, updateById } = require('../infra/mongoQueryHelper.js');
+const { selectExact, selectById, updateById, selectStartWith } = require('../infra/mongoQueryHelper.js');
 const Collection = "ingrediente";
 
 var IngredienteDAO = class IngredienteDAO {
@@ -26,6 +26,26 @@ var IngredienteDAO = class IngredienteDAO {
 
                 res(result);
             });
+        });
+    }
+
+    buscarAutoComplete(descricao, limite) {
+        
+        return new Promise((res, rej) => {
+            try {
+                this.collection
+                    .find(selectStartWith("descricao", descricao))
+                    .limit(limite)
+                    .toArray().then(
+                        ingredientes => {
+                            res(ingredientes);
+                        }
+                    ).catch(err => {
+                        rej(err);
+                    });
+            } catch (err) {
+                rej(err);
+            }
         });
     }
 

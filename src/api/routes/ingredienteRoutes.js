@@ -31,6 +31,10 @@ var IngredienteRoutes = class IngredienteRoutes {
             responseHandle(resp, this._ingredienteBusiness.cadastrar(new Ingrediente(req.body)));
         })
 
+        this._application.post('/ingredientes/autocomplete', verifyJWT, dependencies(this), (req, resp)=>{
+            responseHandle(resp, this._ingredienteBusiness.buscarAutoComplete(req.body.descricao));
+        })
+
         this._application.put('/ingrediente', alterarIngredienteRules(), validate, verifyJWT, dependencies(this), (req, resp) => {
             responseHandle(resp, this._ingredienteBusiness.alterar(new Ingrediente(req.body)));
         })
