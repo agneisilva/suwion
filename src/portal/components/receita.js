@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, ListGroup } from 'react-bootstrap';
 
 class Receita extends React.Component {
     constructor(props) {
@@ -21,9 +21,16 @@ class CadastroReceita extends React.Component {
             nome: "",
             preparo: [],
             ingredientes: [],
+            ingredientesBusca: [],
             rendimento: 0,
             tempo: 0,
-            dificuldade: 0
+            dificuldade: 0,
+            ingredienteSelecionando: {
+                descricao: "",
+                quantia: 0,
+                undMedida: "",
+                ingrediente: null
+            }
         };
     }
 
@@ -40,11 +47,31 @@ class CadastroReceita extends React.Component {
         });
     }
 
+    atribuirCarregamentoIngrediente(campo, e) {
+        var valor = e.target.value;
+        this.setState(prevState => {
+            var altered = Object.assign({}, prevState);
+            altered.ingredienteSelecionando[campo] = valor;
+            return altered;
+        });
+    }
+
     cadastrar() {
 
     }
 
     render() {
+        let { ingredientes } = this.state;
+        let displayIngredientes = (ingredientes.length > 0) ? <Col md={12}>
+            <ListGroup>
+                {ingredientes.map((ingrediente) => {
+                    return <ListGroup.Item>
+                        <strong>{ingrediente.quantia} {ingrediente.undMedida}</strong> {ingrediente.descricao}
+                    </ListGroup.Item>
+                })}
+            </ListGroup>
+        </Col> : null;
+
         return <div>
             <h3 className="card-title">Cadastro de Receita</h3>
             <Row>
@@ -85,17 +112,31 @@ class CadastroReceita extends React.Component {
                     ></input>
                 </Col>
             </Row>
-            {/* <Row>
-                <Col md={2} className="text-right">Ingredientes: </Col>
-                <Col md={10}>
-                    <input id="ingredientes"
-                        value={this.state.ingredientes}
-                        onChange={this.atribuirCarregamento.bind(this, "ingredientes")}
+            <Row>
+                <Col md={2} className="text-right">Ingrediente: </Col>
+                <Col md={2}>
+                    <input id="ingrediente"
+                        value={this.state.ingredienteSelecionando.descricao}
+                        onChange={this.atribuirCarregamentoIngrediente.bind(this, "descricao")}
                         className="w-100"
                     ></input>
                 </Col>
+                <Col md={2} className="text-right">Quantia:</Col>
+                <Col md={2}>
+                    <input id="ingredienteQuantia"
+                        value={this.state.ingredienteSelecionando.quantia}
+                        onChange={this.atribuirCarregamentoIngrediente.bind(this, "quantia")}
+                        className="w-100"
+                    ></input></Col>
+                <Col md={2}><input id="ingredienteUndMedida"
+                    value={this.state.ingredienteSelecionando.undMedida}
+                    onChange={this.atribuirCarregamentoIngrediente.bind(this, "undMedida")}
+                    className="w-100"
+                ></input></Col>
+                <Col md={2}><Button>Adicionar</Button></Col>
+                {displayIngredientes}
             </Row>
-            <Row>
+            {/* <Row>
                 <Col md={2} className="text-right">Preparo: </Col>
                 <Col md={10}>
                     <input id="preparo"
