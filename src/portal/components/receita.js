@@ -1,4 +1,5 @@
 import React from 'react';
+import fetch from 'node-fetch';
 import { Container, Row, Col, Button, ListGroup } from 'react-bootstrap';
 
 class Receita extends React.Component {
@@ -74,7 +75,7 @@ class CadastroReceita extends React.Component {
         });
 
         //TODO implementar controle de delay para só buscar o auto complete depois do usuário parar de digitar por 1.5seg
-        if(campo == "descricao") this.buscarAutoCompleteIngrediente(valor);
+        if (campo == "descricao") this.buscarAutoCompleteIngrediente(valor);
     }
 
     cadastrar() {
@@ -97,13 +98,42 @@ class CadastroReceita extends React.Component {
         console.log("adicionarIngrediente");
     }
 
-    buscarAutoCompleteIngrediente(descricao){
+    buscarAutoCompleteIngrediente(descricao) {
         console.log("buscarAutoCompleteIngrediente " + descricao);
+        let self = this;
+
+        fetch('http://localhost:3100/ingredientes/autocomplete',
+            {
+                method: 'POST',
+                body: JSON.stringify({ descricao }),
+                headers:
+                {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            })
+            .then(result => result.json())
+            .then(result => result.content)
+            .then(result => {
+                console.log(result);
+                self.setState(prevState => {
+                    var altered = Object.assign({}, prevState);
+                    altered.ingredientesBusca = result;
+                    return altered;
+                });
+            })
+            .catch(err => err.content || err.message)
+            .catch(err => {
+                console.log(err);
+                alert(JSON.stringify(err));
+            });
 
     }
 
     render() {
         let { ingredientes, preparo } = this.state.receita;
+        let { ingredientesBusca } = this.state;
+
         let displayIngredientes = (ingredientes.length > 0) ? <Col md={12}>
             <ListGroup>
                 {ingredientes.map((ingrediente, idx) => {
@@ -119,6 +149,16 @@ class CadastroReceita extends React.Component {
                 {preparo.map((passo, idx) => {
                     return <ListGroup.Item key={"passo" + idx}>
                         {passo}
+                    </ListGroup.Item>
+                })}
+            </ListGroup>
+        </Col> : null;
+
+        let displayIngredienteHints = (ingredientesBusca.length > 0) ? <Col md={12}>
+            <ListGroup>
+                {ingredientesBusca.map((ingrediente, idx) => {
+                    return <ListGroup.Item key={"ingrHint" + idx}>
+                        {ingrediente.descricao}
                     </ListGroup.Item>
                 })}
             </ListGroup>
@@ -172,10 +212,12 @@ class CadastroReceita extends React.Component {
                         onChange={this.atribuirCarregamentoIngrediente.bind(this, "descricao")}
                         className="w-100"
                     ></input>
+                    {displayIngredienteHints}
                 </Col>
                 <Col md={2} className="text-right">Quantia:</Col>
                 <Col md={2}>
                     <input id="ingredienteQuantia"
+                        type="number"
                         value={this.state.ingredienteSelecionando.quantia}
                         onChange={this.atribuirCarregamentoIngrediente.bind(this, "quantia")}
                         className="w-100"
