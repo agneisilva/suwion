@@ -1,28 +1,75 @@
 import React from 'react';
 import fetch from 'node-fetch';
 import { Container, Row, Col, Table, Form, FormControl, Button, FormLabel, FormGroup } from 'react-bootstrap';
-import Link from 'next/link'
-
+import { AutenticacaoService as authService } from '../services/auth.js';
 
 class Autenticacao extends React.Component {
     constructor(props) {
         super(props);
+
+        this.logar = this.logar.bind(this);
+
+        this.state = {
+            login: "",
+            senha: ""
+        };
+    }
+
+    atribuirCarregamento(campo, e) {
+        var valor = e.target.value;
+        this.setState(prevState => {
+            var altered = Object.assign({}, prevState);
+            altered[campo] = valor;
+            return altered;
+        });
+    }
+
+    logar() {
+        fetch('http://localhost:3100/login',
+            {
+                method: 'POST',
+                body: JSON.stringify(this.state),
+                headers:
+                {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            })
+            .then(result => result.json())
+            // .then(result => result.content)
+            .then(result => {
+                console.log(result);
+                new authService().logar(result.content);
+            })
+            .catch(err => err.content || err.message)
+            .catch(err => {
+                console.log(err);
+                alert(JSON.stringify(err));
+            });
     }
 
     render() {
         return <Container>
-            <Form className="">
-                <h1 className="h3 mb-3 font-weight-normal">Por favor, se faça seu login</h1>
-                <FormGroup>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl type="text" className="mr-sm-2" />
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Senha <Link href="/"><a>Esqueceu?</a></Link></FormLabel>
-                    <FormControl type="password" className="mr-sm-2" />
-                </FormGroup>
-                <Button className="btn-lg btn-block" variant="primary">Acessar</Button>
-            </Form>
+            <h1 className="h3 mb-3 font-weight-normal">Por favor, se faça seu login</h1>
+            <div>
+                <label>Nickname</label>
+                <input id="login"
+                    value={this.state.login}
+                    onChange={this.atribuirCarregamento.bind(this, "login")}
+                    type="text"
+                    className="mr-sm-2" />
+            </div>
+            <div>
+                <label>Senha </label>
+                <input id="senha"
+                    value={this.state.senha}
+                    onChange={this.atribuirCarregamento.bind(this, "senha")}
+                    type="text"
+                    className="mr-sm-2" />
+            </div>
+            <button className="btn-primary" onClick={this.logar}>Acessar</button>
+            <div><a href="/">Esqueceu?</a></div>
+
         </Container>;
     }
 }
@@ -34,10 +81,10 @@ class CadastroUsuario extends React.Component {
         this.cadastrar = this.cadastrar.bind(this);
 
         this.state = {
-            nome: "agnei silva",
-            email: "agnei.silva@outlook.com",
-            nickName: "agnei.silva",
-            senha: "1231232131"
+            nome: "",
+            email: "",
+            nickName: "",
+            senha: ""
         };
     }
 
