@@ -113,7 +113,12 @@ class CadastroReceita extends React.Component {
                 }
             })
             .then(result => result.json())
-            .then(result => result.content)
+            .then(result => {
+                debugger;
+                if(result.success)
+                    return result.content;
+                throw result;
+            })
             .then(result => {
                 console.log(result);
                 self.setState(prevState => {
@@ -123,11 +128,17 @@ class CadastroReceita extends React.Component {
                 });
             })
             .catch(err => err.content || err.message)
-            .catch(err => {
+            .then(err => {
+                debugger;
                 console.log(err);
                 alert(JSON.stringify(err));
-            });
+            })
+            .catch(err=>console.log);
 
+    }
+
+    selecionarIngrediente(ingrediente){
+        console.log(ingrediente.descricao);
     }
 
     render() {
@@ -158,7 +169,7 @@ class CadastroReceita extends React.Component {
             <ListGroup>
                 {ingredientesBusca.map((ingrediente, idx) => {
                     return <ListGroup.Item key={"ingrHint" + idx}>
-                        {ingrediente.descricao}
+                        <a onClick={this.selecionarIngrediente.bind(this,ingrediente)}>{ingrediente.descricao}</a>
                     </ListGroup.Item>
                 })}
             </ListGroup>
